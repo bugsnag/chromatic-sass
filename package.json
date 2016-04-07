@@ -2,7 +2,7 @@
   "name": "chromatic-sass",
   "version": "0.0.0",
   "description": "chroma.js based utilities in node-sass",
-  "main": "lib/chromatic-sass.js",
+  "main": "lib/main.js",
   "scripts": {
     "build": "gulp"
   },
