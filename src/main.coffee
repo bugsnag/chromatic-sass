@@ -15,7 +15,7 @@ sass2rgb = (sass) ->
 sass2hex = (sass) ->
   chroma(sass.getR(), sass.getG(), sass.getB())
 
-module.exports = {
+module.exports =
   "chromaInterpolate($color0, $color1, $position: .5, $mode: 'lab')": (color0, color1, position, mode) ->
     color0 = chroma(color0.getR(), color0.getG(), color0.getB(), color0.getA())
     color1 = chroma(color1.getR(), color1.getG(), color1.getB(), color1.getA())
@@ -112,4 +112,3 @@ module.exports = {
       str += ", " if i < colors.length - 1
     str += ")"
     nodeSass.types.String(str)
-}
