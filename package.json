@@ -1,0 +1,31 @@
+{
+  "name": "chromatic-sass",
+  "version": "0.0.0",
+  "description": "chroma.js based utilities in node-sass",
+  "main": "lib/chromatic-sass.js",
+  "dependencies": {
+    "chroma-js": "^1.1.1",
+    "node-sass": "^3.4.2",
+    "sassport": "^0.8.0"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-coffee": "^2.3.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/maxluster/chromatic-sass.git"
+  },
+  "keywords": [
+    "chroma",
+    "chromatic",
+    "sass",
+    "sassport"
+  ],
+  "author": "Max Luster",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/maxluster/chromatic-sass/issues"
+  },
+  "homepage": "https://github.com/maxluster/chromatic-sass#readme"
+}
