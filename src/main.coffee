@@ -1,85 +1,60 @@
+extend = require "extend"
 chroma = require "chroma-js"
+sass = require "node-sass"
+sassUtils = require("node-sass-utils")(sass)
 sassport = require "sassport"
-nodeSass = require "node-sass"
-extend = require('util')._extend
 
 # Generate a sass color from an rgb color
 rgb2sass = (rgb) ->
-  nodeSass.types.Color rgb[0], rgb[1], rgb[2]
+  sass.types.Color rgb[0], rgb[1], rgb[2]
 
 # Generate an rgb color from a sass color
-sass2rgb = (sass) ->
-  chroma(sass.getR(), sass.getG(), sass.getB()).rgb()
+sass2rgb = (color) ->
+  chroma(color.getR(), color.getG(), color.getB()).rgb()
 
-# Generate an rgb color from a sass color
-sass2hex = (sass) ->
-  chroma(sass.getR(), sass.getG(), sass.getB())
+# Generate a hex color from a sass color
+sass2hex = (color) ->
+  chroma(color.getR(), color.getG(), color.getB()).hex()
 
 module.exports =
-  "chromaInterpolate($color0, $color1, $position: .5, $mode: 'lab')": (color0, color1, position, mode) ->
-    color0 = chroma(color0.getR(), color0.getG(), color0.getB(), color0.getA())
-    color1 = chroma(color1.getR(), color1.getG(), color1.getB(), color1.getA())
-    position = position.getValue()
-    x = chroma.interpolate(color0, color1, position, 'lab').rgba()
-    nodeSass.types.Color x[0], x[1], x[2], x[3]
-  "chromaMixBlack($color, $amount)": (color0, percent) ->
-    color = chroma(color0.getR(), color0.getG(), color0.getB(), color0.getA())
-    position = percent.getValue() / 100
-    x = chroma.interpolate(color, 'black', position, 'lab').rgba()
-    nodeSass.types.Color x[0], x[1], x[2], x[3]
-  "chromaMixWhite($color, $amount)": (color0, percent) ->
-    color = chroma(color0.getR(), color0.getG(), color0.getB(), color0.getA())
-    position = percent.getValue() / 100
-    x = chroma.interpolate(color, 'white', position, 'lab').rgba()
-    nodeSass.types.Color x[0], x[1], x[2], x[3]
-  "chromaScale($color0, $color1, $length: 2, $mode: 'lab')": (color0, color1, length, mode) ->
-    color0 = chroma(color0.getR(), color0.getG(), color0.getB(), color0.getA())
-    color1 = chroma(color1.getR(), color1.getG(), color1.getB(), color1.getA())
-    length = length.getValue()
-    mode = mode.getValue()
-    colors = chroma.scale([color0, color1]).mode(mode).colors(length)
-    map = new nodeSass.types.Map(colors.length)
-    for x, i in colors
-      x = chroma(x).rgb()
-      map.setKey(i, nodeSass.types.Number i)
-      map.setValue(i, nodeSass.types.Color x[0], x[1], x[2])
-    map
+  "chromatic($argslist...)": sassport.wrap (argslist) ->
+    # TODO: unpack
+    chroma.lab(l, a, b).hex()
 
-  # CHROMATIC ----------------
+  "chromatic-lab($l, $a, $b)": sassport.wrap (l, a, b) ->
+    chroma.lab(l, a, b).hex()
 
-  "lab($l, $a, $b)": (l, a, b) ->
-    rgb2sass chroma.lab(l.getValue(), a.getValue(), b.getValue()).rgb()
+  "chromatic-hcl($h, $c, $l)": sassport.wrap (h, c, l) ->
+    chroma.hcl(h, c, l).hex()
 
-  "hcl($h, $c, $l)": (h, c, l) ->
-    rgb2sass chroma.hcl(h.getValue(), c.getValue(), l.getValue()).rgb()
+  "chromatic-mix($color0, $color1, $position: .5, $mode: 'lab')": sassport.wrap (color0, color1, position, mode) ->
+    chroma.mix(sass2hex(color0), sass2hex(color1), position, mode).hex()
 
-  "chromatic-mix($sassColor1, $sassColor2, $position: .5, $mode: 'lab')": (sassColor1, sassColor2, position, mode) ->
-    rgb2sass chroma.mix(sass2rgb(sassColor1), sass2rgb(sassColor2), position.getValue(), mode.getValue()).rgb()
+  "chromatic-contrast($color0, $color1)": sassport.wrap (color0, color1) ->
+    chroma.contrast(sass2hex(color0), sass2hex(color1))
 
-  "chromatic-contrast($sassColor1, $sassColor2)": (sassColor1, sassColor2) ->
-    nodeSass.types.Number chroma.contrast(sass2hex(sassColor1), sass2hex(sassColor2))
-
-  "js-chromatic-gradient($argslist...)": (argslist) ->
+  "chromatic-gradient($argslist...)": (argslist) ->
     defaults =
       mode: "lab"
       bezier: false
       stops: 7
       type: "linear"
       direction: null
+    options = {}
+    colors = []
 
     # Unpack argslist to an array of sass objects
     sassStops = []
-    args = []
-    for i in [0...argslist.getLength()]
-      args[i] = argslist.getValue(i)
+    args = sassUtils.castToJs(argslist)
 
     # Unpack options if they are provided
-    options = {}
-    if args[0].constructor.name == "SassMap"
-      for i in [0...args[0].getLength()]
-        sassValue = args[0].getValue(i)
-        options[args[0].getKey(i).getValue()] = if sassValue.constructor.name == "SassNull" then null else sassValue.getValue()
+    if sassUtils.typeOf(args[0]) == "map"
+      sassOptions = args[0]
+      for i in [0...sassOptions.getLength()]
+        options[sassOptions.getKey(i).getValue()] = sassUtils.castToJs(sassOptions.getValue(i))
       sassStops = args.slice(1, args.length)
+    else
+      sassStops = args
     settings = extend(defaults, options)
 
     # Unpack color stops if packed into an outer list
@@ -90,10 +65,9 @@ module.exports =
       sassStops = x
 
     # Unpack data from sass objects
-    colors = []
     for stop, i in sassStops
       # Ignore positioning data for now. Implement support for this later
-      if stop.constructor.name == "SassList"
+      if sassUtils.typeOf(stop) == "list"
         colors.push sass2rgb(stop.getValue(0))
       else
         colors.push sass2rgb(stop)
@@ -106,9 +80,54 @@ module.exports =
 
     # Build string
     str = settings.type + "-gradient("
-    str += if settings.direction then settings.direction + ", "
+    str += settings.direction + ", " if settings.direction
     for color, i in colors
       str += color
       str += ", " if i < colors.length - 1
     str += ")"
-    nodeSass.types.String(str)
+    sass.types.String(str)
+
+
+  "chromatic-scale($argslist...)": (argslist) ->
+    defaults =
+      mode: "lab"
+      stops: 10
+      bezier: false
+      location: false
+    options = {}
+    colors = []
+
+    # Coerce args
+    for i in [0...argslist.getLength()]
+      arg = argslist.getValue(i)
+      argType = sassUtils.typeOf(arg)
+      if argType is "map"
+        for i in [0...arg.getLength()]
+          options[arg.getKey(i).getValue()] = arg.getValue(i).getValue()
+      else if argType is "list"
+        for color in sassUtils.castToJs(arg)
+          colors.push sass2hex(color) if sassUtils.typeOf(color) == "color"
+      else if argType is "color"
+        colors.push sass2hex(arg)
+
+    settings = extend(defaults, options)
+
+    # Generate chroma scale
+    scale
+    if settings.bezier
+      scale = chroma.bezier(colors).scale()
+    else
+      scale = chroma.scale(colors).mode(settings.mode)
+
+    # If a single value is requested, show it
+    if settings.location
+      return scale(settings.location)
+    else
+      colors = scale.colors(settings.stops)
+
+    # Generate sass map
+    sassMap = sass.types.Map(colors.length)
+    for color, i in colors
+      sassMap.setKey i, sass.types.Number(i)
+      sassMap.setValue i, rgb2sass(chroma(color).rgb())
+    sassMap
