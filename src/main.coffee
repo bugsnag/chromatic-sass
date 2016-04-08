@@ -43,34 +43,30 @@ module.exports =
     options = {}
     colors = []
 
-    # Unpack argslist to an array of sass objects
-    sassStops = []
-    args = sassUtils.castToJs(argslist)
+    # Check if the first argument is a definition of the gradient line
+    firstArg = argslist.getValue(0)
+    console.log firstArg
+    if sassUtils.typeOf(firstArg) is "list"
+      for arg in sassUtils.castToJs(firstArg)
+        console.log arg
 
-    # Unpack options if they are provided
-    if sassUtils.typeOf(args[0]) == "map"
-      sassOptions = args[0]
-      for i in [0...sassOptions.getLength()]
-        options[sassOptions.getKey(i).getValue()] = sassUtils.castToJs(sassOptions.getValue(i))
-      sassStops = args.slice(1, args.length)
-    else
-      sassStops = args
+    # Coerce args
+    for i in [0...argslist.getLength()]
+      arg = argslist.getValue(i)
+      argType = sassUtils.typeOf(arg)
+      if i is 0
+
+
+      if argType is "map"
+        for i in [0...arg.getLength()]
+          options[arg.getKey(i).getValue()] = arg.getValue(i).getValue()
+      else if argType is "list"
+        for color in sassUtils.castToJs(arg)
+          colors.push sass2hex(color) if sassUtils.typeOf(color) == "color"
+      else if argType is "color"
+        colors.push sass2hex(arg)
+
     settings = extend(defaults, options)
-
-    # Unpack color stops if packed into an outer list
-    if sassStops.length == 1
-      x = []
-      for i in [0...sassStops[0].getLength()]
-        x[i] = sassStops[0].getValue(i)
-      sassStops = x
-
-    # Unpack data from sass objects
-    for stop, i in sassStops
-      # Ignore positioning data for now. Implement support for this later
-      if sassUtils.typeOf(stop) == "list"
-        colors.push sass2rgb(stop.getValue(0))
-      else
-        colors.push sass2rgb(stop)
 
     # Generate chroma scale color array
     if settings.bezier
