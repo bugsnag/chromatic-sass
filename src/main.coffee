@@ -135,10 +135,7 @@ module.exports =
 
       # Interpolate additional points in specified color space
       scale = chroma.scale(colors).domain(domain).mode(settings.mode)
-      console.log settings
       while colors.length < settings.stops
-        console.log colors
-        console.log domain
         maxDistance = 0
         maxDistanceStartIndex = null
         for i in [0...colors.length - 1]
@@ -151,17 +148,8 @@ module.exports =
           colors.splice(maxDistanceStartIndex + 1, 0, scale(newPosition).hex())
           domain.splice(maxDistanceStartIndex + 1, 0, newPosition)
           positions.splice(maxDistanceStartIndex + 1, 0, null)
-          console.log "Max distance: " + maxDistance
-          console.log "Max distance start index: " + maxDistanceStartIndex
-          console.log "New color: " + scale(newPosition).hex()
-          console.log "New position: " + newPosition
         else
           break
-      console.log colors
-      console.log domain
-
-
-
 
     # Build string
     str = settings.type + "-gradient("
