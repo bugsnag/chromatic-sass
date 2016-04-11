@@ -44,7 +44,7 @@ module.exports =
       stops: 7
       type: "linear"
       padding: null
-    direction = ""
+    direction = null
     options = {}
     colors = []
     positions = []
@@ -91,8 +91,11 @@ module.exports =
         colors.push sass2hex(arg)
         positions.push null
 
-    # If color positions were provided, generate a chroma compatable colors and domain array
-    unless (positions.every (position) -> position is null)
+    # If no positions are provided, grab equidistant stops
+    if (positions.every (position) -> position is null)
+      colors = chroma.scale(colors).mode(settings.mode).colors(settings.stops)
+    # Else generate a chroma domain and interpolate stops
+    else
       # Set defaults for domain start and end
       domain = positions.slice(0)
       domain[0] = 0 if domain[0] is null
@@ -101,6 +104,7 @@ module.exports =
       else if domain[domain.length - 1] < 1
         colors.push(colors[colors.length - 1])
         domain.push(1)
+        positions.push(null)
 
       # Populate null positions
       lastNonnullIndex = 0
@@ -129,19 +133,43 @@ module.exports =
           else if value > maxValue
             maxValue = value
 
-    # Generate chroma scale color array
-    # TODO: interleave generated scale with provided colors
-    if settings.bezier
-      colors = chroma.bezier(colors).scale().colors(settings.stops)
-    else
-      colors = chroma.scale(colors).mode(settings.mode).colors(settings.stops)
+      # Interpolate additional points in specified color space
+      scale = chroma.scale(colors).domain(domain).mode(settings.mode)
+      console.log settings
+      while colors.length < settings.stops
+        console.log colors
+        console.log domain
+        maxDistance = 0
+        maxDistanceStartIndex = null
+        for i in [0...colors.length - 1]
+          distance = domain[i + 1] - domain[i]
+          if distance > maxDistance and colors[i] isnt colors[i + 1]
+            maxDistanceStartIndex = i
+            maxDistance = distance
+        if maxDistanceStartIndex?
+          newPosition = maxDistance / 2 + domain[maxDistanceStartIndex]
+          colors.splice(maxDistanceStartIndex + 1, 0, scale(newPosition).hex())
+          domain.splice(maxDistanceStartIndex + 1, 0, newPosition)
+          positions.splice(maxDistanceStartIndex + 1, 0, null)
+          console.log "Max distance: " + maxDistance
+          console.log "Max distance start index: " + maxDistanceStartIndex
+          console.log "New color: " + scale(newPosition).hex()
+          console.log "New position: " + newPosition
+        else
+          break
+      console.log colors
+      console.log domain
+
+
+
 
     # Build string
     str = settings.type + "-gradient("
-    str += settings.direction + ", " if settings.direction
+    str += direction + ", " if direction
     for color, i in colors
       str += color
-      str += " " + positions[i] * 100 + "%" if positions[i]
+      # Prob use domain here
+      str += " " + positions[i] * 100 + "%" if positions[i]?
       str += ", " if i < colors.length - 1
     str += ")"
     sass.types.String(str)
