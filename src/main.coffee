@@ -16,6 +16,7 @@ sass2rgb = (color) ->
 sass2hex = (color) ->
   chroma(color.getR(), color.getG(), color.getB()).hex()
 
+
 # Represent a SassList as a JS array
 list2arr = (sassList) ->
   arr = (sassList.getValue(i) for i in [0...sassList.getLength()])
@@ -25,14 +26,62 @@ module.exports =
     # TODO: unpack
     chroma.lab(l, a, b).hex()
 
-  "chromatic-lab($l, $a, $b)": sassport.wrap (l, a, b) ->
-    chroma.lab(l, a, b).hex()
+  "chromatic-hsv($x, $y, $z)": sassport.wrap (x, y, z) ->
+    chroma.hsv(x, y, z).hex()
 
-  "chromatic-hcl($h, $c, $l)": sassport.wrap (h, c, l) ->
-    chroma.hcl(h, c, l).hex()
+  "chromatic-lab($x, $y, $z)": sassport.wrap (x, y, z) ->
+    chroma.lab(x, y, z).hex()
+
+  "chromatic-lch($x, $y, $z)": sassport.wrap (x, y, z) ->
+    chroma.lch(x, y, z).hex()
+
+  "chromatic-hcl($x, $y, $z)": sassport.wrap (x, y, z) ->
+    chroma.hcl(x, y, z).hex()
+
+  "chromatic-cmyk($c, $m, $y, $k)": sassport.wrap (c, m, y, k) ->
+    chroma.cmyk(c, m, y, k).hex()
+
+  "chromatic-gl($r, $g, $b, $a: 1)": sassport.wrap (r, g, b, a) ->
+    chroma.gl(r, g, b, a).hex()
+
+  "chromatic-color-temperature($color)": sassport.wrap (color) ->
+    chroma(sass2hex(color)).temperature()
+
+  "chromatic-color-darken($color, $value: '')": sassport.wrap (color, value) ->
+    chroma(sass2hex(color)).darken((value if value?)).hex()
+
+  "chromatic-color-lighten($color, $value: '')": sassport.wrap (color, value) ->
+    chroma(sass2hex(color)).lighten((value if value?)).hex()
+
+  "chromatic-color-saturate($color, $value: '')": sassport.wrap (color, value) ->
+    chroma(sass2hex(color)).saturate((value if value?)).hex()
+
+  "chromatic-color-desaturate($color, $value: '')": sassport.wrap (color, value) ->
+    chroma(sass2hex(color)).desaturate((value if value?)).hex()
+
+  "chromatic-color-set($color, $channel, $value)": sassport.wrap (color, channel, value) ->
+    chroma(sass2hex(color)).set(channel, value).hex()
+
+  "chromatic-color-get($color, $channel)": sassport.wrap (color, channel) ->
+    chroma(sass2hex(color)).get(channel)
+
+  "chromatic-color-luminance($color, $luminance: '', $mode: '')": sassport.wrap (color, luminance, mode) ->
+    if luminance
+      if mode
+        chroma(sass2hex(color)).luminance(luminance, mode).hex()
+      else
+        chroma(sass2hex(color)).luminance(luminance).hex()
+    else
+      chroma(sass2hex(color)).luminance()
 
   "chromatic-mix($color0, $color1, $position: .5, $mode: 'lab')": sassport.wrap (color0, color1, position, mode) ->
     chroma.mix(sass2hex(color0), sass2hex(color1), position, mode).hex()
+
+  "chromatic-blend($color0, $color1, $blendMode)": sassport.wrap (color0, color1, blendMode) ->
+    chroma.blend(sass2hex(color0), sass2hex(color1), blendMode).hex()
+
+  "chromatic-random()": sassport.wrap () ->
+    chroma.random().hex()
 
   "chromatic-contrast($color0, $color1)": sassport.wrap (color0, color1) ->
     chroma.contrast(sass2hex(color0), sass2hex(color1))
@@ -170,6 +219,7 @@ module.exports =
       bezier: false
       location: null
       domain: null
+      padding: null
     options = {}
     colors = []
 
