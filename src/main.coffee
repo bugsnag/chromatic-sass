@@ -128,6 +128,8 @@ module.exports =
       argType = sassUtils.typeOf(arg)
       # Unpack color stops
       if argType is "list"
+        if settings.bezier
+          return sass.types.Error("Chromatic gradient with bezier interpolation must not have stop positions")
         arg = list2arr(arg)
         if sassUtils.typeOf(arg[0]) is "color" and sassUtils.typeOf(arg[1]) is "number" and arg.length is 2
           if arg[1].getUnit() isnt "%"
@@ -206,7 +208,7 @@ module.exports =
     for color, i in colors
       str += color
       # Prob use domain here
-      str += " " + positions[i] * 100 + "%" if positions[i]?
+      str += " " + positions[i] * 100 + "%" if positions[i]
       str += ", " if i < colors.length - 1
     str += ")"
     sass.types.String(str)
