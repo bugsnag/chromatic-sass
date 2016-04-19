@@ -192,6 +192,9 @@ module.exports =
       maxDistanceStartIndex = null
       for i in [0...colors.length - 1]
         distance = positions[i + 1] - positions[i]
+        console.log colors[i]
+        console.log colors[i + 1]
+        console.log isEqual(colors[i], colors[i + 1])
         if distance > maxDistance and !isEqual(colors[i], colors[i + 1])
           maxDistanceStartIndex = i
           maxDistance = distance
