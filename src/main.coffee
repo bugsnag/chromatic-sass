@@ -107,8 +107,8 @@ module.exports =
     direction = null
     options = {}
     colors = []
+    initPositions = []
     positions = []
-    calculatedPositions = []
     argslistLength = argslist.getLength()
 
     # Set direction if provided
@@ -140,50 +140,49 @@ module.exports =
       # Unpack color stops
       if argType is "list"
         if settings.bezier
-          return sass.types.Error("Chromatic gradient with bezier interpolation must not have stop positions")
+          return sass.types.Error("Chromatic gradient with bezier interpolation must not have stop initPositions")
         arg = list2arr(arg)
         if sassUtils.typeOf(arg[0]) is "color" and sassUtils.typeOf(arg[1]) is "number" and arg.length is 2
           if arg[1].getUnit() isnt "%"
-            return sass.types.Error("Chromatic gradient color-stop positions must be provided as percentages")
+            return sass.types.Error("Chromatic gradient color-stop initPositions must be provided as percentages")
           colors.push sass2rgba arg[0]
-          positions.push arg[1].getValue() / 100
+          initPositions.push arg[1].getValue() / 100
         else
           return sass.types.Error("Chromatic gradient color stops must take the form: <color> [<percentage>]?")
       else if argType is "color"
         colors.push sass2rgba arg
-        positions.push null
+        initPositions.push null
 
 
-    # Set defaults for calculatedPositions start and end
-    calculatedPositions = positions.slice(0)
-    calculatedPositions[0] = 0 if calculatedPositions[0] is null
-    if calculatedPositions[calculatedPositions.length - 1] is null
-      calculatedPositions[calculatedPositions.length - 1] = 1
+    # Set defaults for positions start and end
+    positions = initPositions.slice(0)
+    positions[0] = 0 if positions[0] is null
+    positions[positions.length - 1] = 1 if positions[positions.length - 1] is null
 
-    # Populate null positions
+    # Populate null initPositions
     lastNonnullIndex = 0
     numberOfNulls = 0
     nullIndex = 0
     maxValue = 0
-    for value, index in calculatedPositions
+    for value, index in positions
       if value is null
         increment = 0
         nullIndex += 1
-        for nextValue, nextIndex in calculatedPositions.slice(index + 1, calculatedPositions.length)
+        for nextValue, nextIndex in positions.slice(index + 1, positions.length)
           if nextValue
             numberOfNulls = nextIndex + index - lastNonnullIndex
             if nextValue <= maxValue
               increment = maxValue
             else
-              increment = ((nextValue - calculatedPositions[lastNonnullIndex]) * 1.0)/(numberOfNulls + 1)
+              increment = ((nextValue - positions[lastNonnullIndex]) * 1.0)/(numberOfNulls + 1)
             break
-        calculatedPositions[index] = increment * nullIndex
+        positions[index] = increment * nullIndex
       else
         nullIndex = 0
         lastNonnullIndex = index
         if value < maxValue
           value = maxValue
-          calculatedPositions[index] = value
+          positions[index] = value
         else if value > maxValue
           maxValue = value
 
@@ -192,16 +191,16 @@ module.exports =
       maxDistance = 0
       maxDistanceStartIndex = null
       for i in [0...colors.length - 1]
-        distance = calculatedPositions[i + 1] - calculatedPositions[i]
+        distance = positions[i + 1] - positions[i]
         if distance > maxDistance and !isEqual(colors[i], colors[i + 1])
           maxDistanceStartIndex = i
           maxDistance = distance
       if maxDistanceStartIndex?
-        newPosition = maxDistance / 2 + calculatedPositions[maxDistanceStartIndex]
+        newPosition = maxDistance / 2 + positions[maxDistanceStartIndex]
         newColor = chroma.mix(colors[maxDistanceStartIndex], colors[maxDistanceStartIndex + 1], .5, settings.mode)._rgb
         colors.splice(maxDistanceStartIndex + 1, 0, newColor)
-        calculatedPositions.splice(maxDistanceStartIndex + 1, 0, newPosition)
-        positions.splice(maxDistanceStartIndex + 1, 0, null)
+        positions.splice(maxDistanceStartIndex + 1, 0, newPosition)
+        initPositions.splice(maxDistanceStartIndex + 1, 0, null)
       else
         break
 
@@ -210,7 +209,7 @@ module.exports =
     str += direction + ", " if direction
     for color, i in colors
       str += rgba2str color
-      str += " " + positions[i] * 100 + "%" if positions[i]
+      str += " " + initPositions[i] * 100 + "%" if initPositions[i]
       str += ", " if i < colors.length - 1
     str += ")"
     sass.types.String(str)
@@ -222,7 +221,7 @@ module.exports =
       stops: 10
       bezier: false
       location: null
-      calculatedPositions: null
+      positions: null
       padding: null
     options = {}
     colors = []
@@ -248,7 +247,7 @@ module.exports =
       scale = chroma.bezier(colors).scale()
     else
       scale = chroma.scale(colors).mode(settings.mode)
-      scale = scale.calculatedPositions(settings.calculatedPositions) if settings.calculatedPositions
+      scale = scale.positions(settings.positions) if settings.positions
 
     # If a location is requested, return the color at that location
     if settings.location
