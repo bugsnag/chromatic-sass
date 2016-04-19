@@ -3,6 +3,7 @@ chroma = require "chroma-js"
 sass = require "node-sass"
 sassUtils = require("node-sass-utils")(sass)
 sassport = require "sassport"
+isEqual = require('lodash.isEqual')
 
 # Generate a sass color from an rgb color
 rgb2sass = (rgb) ->
@@ -15,6 +16,16 @@ sass2rgb = (color) ->
 # Generate a hex color from a sass color
 sass2hex = (color) ->
   chroma(color.getR(), color.getG(), color.getB()).hex()
+
+# Generate a hex color from a sass color
+sass2rgba = (color) ->
+  [color.getR(), color.getG(), color.getB(), color.getA()]
+
+rgba2str = (rgba) ->
+  "rgba(#{rgba[0]}, #{rgba[1]}, #{rgba[2]}, #{rgba[3]})"
+
+rgba2sass = (rgba) ->
+  sass.types.Color rgb[0], rgb[1], rgb[2], rgb[3]
 
 
 # Represent a SassList as a JS array
@@ -97,7 +108,7 @@ module.exports =
     options = {}
     colors = []
     positions = []
-    domain = []
+    calculatedPositions = []
     argslistLength = argslist.getLength()
 
     # Set direction if provided
@@ -134,80 +145,71 @@ module.exports =
         if sassUtils.typeOf(arg[0]) is "color" and sassUtils.typeOf(arg[1]) is "number" and arg.length is 2
           if arg[1].getUnit() isnt "%"
             return sass.types.Error("Chromatic gradient color-stop positions must be provided as percentages")
-          colors.push sass2hex(arg[0])
+          colors.push sass2rgba arg[0]
           positions.push arg[1].getValue() / 100
         else
           return sass.types.Error("Chromatic gradient color stops must take the form: <color> [<percentage>]?")
       else if argType is "color"
-        colors.push sass2hex(arg)
+        colors.push sass2rgba arg
         positions.push null
 
-    # If no positions are provided, grab equidistant stops
-    if (positions.every (position) -> position is null)
-      colors = chroma.scale(colors).mode(settings.mode).colors(settings.stops)
-    # Else generate a chroma domain and interpolate stops
-    else
-      # Set defaults for domain start and end
-      domain = positions.slice(0)
-      domain[0] = 0 if domain[0] is null
-      if domain[domain.length - 1] is null
-        domain[domain.length - 1] = 1
-      else if domain[domain.length - 1] < 1
-        colors.push(colors[colors.length - 1])
-        domain.push(1)
-        positions.push(null)
 
-      # Populate null positions
-      lastNonnullIndex = 0
-      numberOfNulls = 0
-      nullIndex = 0
-      maxValue = 0
-      for value, index in domain
-        if value is null
-          increment = 0
-          nullIndex += 1
-          for nextValue, nextIndex in domain.slice(index + 1, domain.length)
-            if nextValue
-              numberOfNulls = nextIndex + index - lastNonnullIndex
-              if nextValue <= maxValue
-                increment = maxValue
-              else
-                increment = ((nextValue - domain[lastNonnullIndex]) * 1.0)/(numberOfNulls + 1)
-              break
-          domain[index] = increment * nullIndex
-        else
-          nullIndex = 0
-          lastNonnullIndex = index
-          if value < maxValue
-            value = maxValue
-            domain[index] = value
-          else if value > maxValue
-            maxValue = value
+    # Set defaults for calculatedPositions start and end
+    calculatedPositions = positions.slice(0)
+    calculatedPositions[0] = 0 if calculatedPositions[0] is null
+    if calculatedPositions[calculatedPositions.length - 1] is null
+      calculatedPositions[calculatedPositions.length - 1] = 1
 
-      # Interpolate additional points in specified color space
-      scale = chroma.scale(colors).domain(domain).mode(settings.mode)
-      while colors.length < settings.stops
-        maxDistance = 0
-        maxDistanceStartIndex = null
-        for i in [0...colors.length - 1]
-          distance = domain[i + 1] - domain[i]
-          if distance > maxDistance and colors[i] isnt colors[i + 1]
-            maxDistanceStartIndex = i
-            maxDistance = distance
-        if maxDistanceStartIndex?
-          newPosition = maxDistance / 2 + domain[maxDistanceStartIndex]
-          colors.splice(maxDistanceStartIndex + 1, 0, scale(newPosition).hex())
-          domain.splice(maxDistanceStartIndex + 1, 0, newPosition)
-          positions.splice(maxDistanceStartIndex + 1, 0, null)
-        else
-          break
+    # Populate null positions
+    lastNonnullIndex = 0
+    numberOfNulls = 0
+    nullIndex = 0
+    maxValue = 0
+    for value, index in calculatedPositions
+      if value is null
+        increment = 0
+        nullIndex += 1
+        for nextValue, nextIndex in calculatedPositions.slice(index + 1, calculatedPositions.length)
+          if nextValue
+            numberOfNulls = nextIndex + index - lastNonnullIndex
+            if nextValue <= maxValue
+              increment = maxValue
+            else
+              increment = ((nextValue - calculatedPositions[lastNonnullIndex]) * 1.0)/(numberOfNulls + 1)
+            break
+        calculatedPositions[index] = increment * nullIndex
+      else
+        nullIndex = 0
+        lastNonnullIndex = index
+        if value < maxValue
+          value = maxValue
+          calculatedPositions[index] = value
+        else if value > maxValue
+          maxValue = value
+
+    # Interpolate additional points in specified color space
+    while colors.length < settings.stops
+      maxDistance = 0
+      maxDistanceStartIndex = null
+      for i in [0...colors.length - 1]
+        distance = calculatedPositions[i + 1] - calculatedPositions[i]
+        if distance > maxDistance and !isEqual(colors[i], colors[i + 1])
+          maxDistanceStartIndex = i
+          maxDistance = distance
+      if maxDistanceStartIndex?
+        newPosition = maxDistance / 2 + calculatedPositions[maxDistanceStartIndex]
+        newColor = chroma.mix(colors[maxDistanceStartIndex], colors[maxDistanceStartIndex + 1], .5, settings.mode)._rgb
+        colors.splice(maxDistanceStartIndex + 1, 0, newColor)
+        calculatedPositions.splice(maxDistanceStartIndex + 1, 0, newPosition)
+        positions.splice(maxDistanceStartIndex + 1, 0, null)
+      else
+        break
 
     # Build string
     str = settings.type + "-gradient("
     str += direction + ", " if direction
     for color, i in colors
-      str += color
-      # Prob use domain here
+      str += rgba2str color
       str += " " + positions[i] * 100 + "%" if positions[i]
       str += ", " if i < colors.length - 1
     str += ")"
@@ -220,7 +222,7 @@ module.exports =
       stops: 10
       bezier: false
       location: null
-      domain: null
+      calculatedPositions: null
       padding: null
     options = {}
     colors = []
@@ -246,7 +248,7 @@ module.exports =
       scale = chroma.bezier(colors).scale()
     else
       scale = chroma.scale(colors).mode(settings.mode)
-      scale = scale.domain(settings.domain) if settings.domain
+      scale = scale.calculatedPositions(settings.calculatedPositions) if settings.calculatedPositions
 
     # If a location is requested, return the color at that location
     if settings.location
