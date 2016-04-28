@@ -27,7 +27,6 @@ rgba2str = (rgba) ->
 rgba2sass = (rgba) ->
   sass.types.Color rgb[0], rgb[1], rgb[2], rgb[3]
 
-
 # Represent a SassList as a JS array
 list2arr = (sassList) ->
   arr = (sassList.getValue(i) for i in [0...sassList.getLength()])
@@ -100,10 +99,8 @@ module.exports =
   "chromatic-gradient($argslist...)": (argslist) ->
     defaults =
       mode: "lab"
-      bezier: false
       stops: 7
       type: "linear"
-      padding: null
     direction = null
     options = {}
     colors = []
@@ -153,7 +150,6 @@ module.exports =
         colors.push sass2rgba arg
         initPositions.push null
 
-
     # Set defaults for positions start and end
     positions = initPositions.slice(0)
     positions[0] = 0 if positions[0] is null
@@ -192,9 +188,6 @@ module.exports =
       maxDistanceStartIndex = null
       for i in [0...colors.length - 1]
         distance = positions[i + 1] - positions[i]
-        console.log colors[i]
-        console.log colors[i + 1]
-        console.log isEqual(colors[i], colors[i + 1])
         if distance > maxDistance and !isEqual(colors[i], colors[i + 1])
           maxDistanceStartIndex = i
           maxDistance = distance
@@ -222,7 +215,6 @@ module.exports =
     defaults =
       mode: "lab"
       stops: 10
-      bezier: false
       location: null
       positions: null
       padding: null
@@ -245,12 +237,9 @@ module.exports =
     settings = extend(defaults, options)
 
     # Generate chroma scale
-    scale
-    if settings.bezier
-      scale = chroma.bezier(colors).scale()
-    else
-      scale = chroma.scale(colors).mode(settings.mode)
-      scale = scale.positions(settings.positions) if settings.positions
+    scale = chroma.scale(colors).mode(settings.mode)
+    scale = scale.positions(settings.positions) if settings.positions
+    scale = scale.padding(settings.padding) if settings.padding
 
     # If a location is requested, return the color at that location
     if settings.location
@@ -264,3 +253,26 @@ module.exports =
       sassMap.setKey i, sass.types.Number(i)
       sassMap.setValue i, rgb2sass(chroma(color).rgb())
     sassMap
+
+  "chromatic-bezier($argslist...)": (argslist) ->
+    defaults =
+      stops: 10
+      location: null
+    options = {}
+    colors = []
+
+    # Set colors
+    for i in [0...argslist.getLength()]
+      arg = argslist.getValue(i)
+      argType = sassUtils.typeOf(arg)
+      if argType is "map"
+        for i in [0...arg.getLength()]
+          options[arg.getKey(i).getValue()] = arg.getValue(i).getValue()
+      else if argType is "list"
+        for color in sassUtils.castToJs(arg)
+          colors.push sass2hex(color) if sassUtils.typeOf(color) == "color"
+      else if argType is "color"
+        colors.push sass2hex(arg)
+
+    settings = extend(defaults, options)
+    scale = chroma.bezier(colors).scale()
