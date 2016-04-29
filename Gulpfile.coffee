@@ -7,12 +7,14 @@ autoprefixer = require "gulp-autoprefixer"
 cssGlobbing = require "gulp-css-globbing"
 cssNano = require "gulp-cssnano"
 chromatic = require "chromatic-sass"
+liveReload = require "gulp-livereload"
 
 gulp.task "build-js", ->
   stream = gulp.src("src/script/scripts.coffee")
     .pipe(coffee())
     .pipe(uglify())
     .pipe(gulp.dest('./'))
+    .pipe(liveReload())
 
 gulp.task "build-sass", ->
   stream = gulp.src("src/styles/styles.scss")
@@ -20,10 +22,12 @@ gulp.task "build-sass", ->
     .pipe(sass({functions: chromatic}))
     .pipe(autoprefixer())
     .pipe(gulp.dest('./'))
+    .pipe(liveReload())
 
 gulp.task "build", ["build-sass", "build-js"]
 
 gulp.task "watch", ->
+  liveReload.listen()
   gulp.watch "src/**/*", { interval: 100 }, ["build"]
 
 gulp.task "default", ["build", "watch"]

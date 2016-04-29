@@ -1,1 +1,1 @@
-(function(){alert("hi")}).call(this);
+(function(){}).call(this);

@@ -1,4 +1,4 @@
 html {
   height: 100%;
-  background-image: -webkit-linear-gradient(top left, rgba(255, 0, 0, 1), rgba(236, 56, 25, 1), rgba(216, 77, 42, 1), rgba(196, 92, 57, 1), rgba(174, 103, 72, 1), rgba(122, 118, 100, 1), rgba(0, 128, 128, 1));
-  background-image: linear-gradient(to bottom right, rgba(255, 0, 0, 1), rgba(236, 56, 25, 1), rgba(216, 77, 42, 1), rgba(196, 92, 57, 1), rgba(174, 103, 72, 1), rgba(122, 118, 100, 1), rgba(0, 128, 128, 1)); }
+  background-image: -webkit-linear-gradient(left, rgba(0, 0, 0, 1), rgba(18, 35, 11, 1), rgba(21, 64, 14, 1), rgba(18, 95, 11, 1), rgba(0, 128, 0, 1), rgba(21, 64, 14, 1), rgba(0, 0, 0, 1));
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 1), rgba(18, 35, 11, 1), rgba(21, 64, 14, 1), rgba(18, 95, 11, 1), rgba(0, 128, 0, 1), rgba(21, 64, 14, 1), rgba(0, 0, 0, 1)); }
