@@ -1,17 +1,18 @@
 {
   "name": "chromatic-sass",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "chroma.js based utilities in node-sass",
   "main": "lib/main.js",
   "scripts": {
     "build": "gulp"
   },
   "dependencies": {
-    "node-sass": "^3.4.2",
     "chroma-js": "^1.1.1",
+    "extend": "^3.0.0",
     "lodash.isequal": "^4.1.4",
-    "sassport": "^0.8.0",
-    "extend": "^3.0.0"
+    "node-sass": "^3.4.2",
+    "node-sass-utils": "^1.1.2",
+    "sassport": "^0.8.0"
   },
   "devDependencies": {
     "coffee-script": "^1.10.0",
