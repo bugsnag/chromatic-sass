@@ -6,6 +6,7 @@ sass = require "gulp-sass"
 autoprefixer = require "gulp-autoprefixer"
 cssGlobbing = require "gulp-css-globbing"
 cssNano = require "gulp-cssnano"
+chromatic = require "chromatic-sass"
 
 gulp.task "build-js", ->
   stream = gulp.src("src/script/scripts.coffee")
@@ -16,7 +17,7 @@ gulp.task "build-js", ->
 gulp.task "build-sass", ->
   stream = gulp.src("src/styles/styles.scss")
     .pipe(cssGlobbing({extensions: [".css", ".scss"]}))
-    .pipe(sass())
+    .pipe(sass({functions: chromatic}))
     .pipe(autoprefixer())
     .pipe(gulp.dest('./'))
 
