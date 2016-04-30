@@ -136,22 +136,19 @@ module.exports =
       argType = sassUtils.typeOf(arg)
       # Unpack color stops
       if argType is "list"
-        if settings.bezier
-          return sass.types.Error("Chromatic gradient with bezier interpolation must not have stop initPositions")
         arg = list2arr(arg)
         if sassUtils.typeOf(arg[0]) is "color" and sassUtils.typeOf(arg[1]) is "number" and arg.length is 2
           if arg[1].getUnit() isnt "%"
             return sass.types.Error("Chromatic gradient color-stop initPositions must be provided as percentages")
           colors.push sass2rgba arg[0]
-          initPositions.push arg[1].getValue() / 100
+          positions.push arg[1].getValue() / 100
         else
           return sass.types.Error("Chromatic gradient color stops must take the form: <color> [<percentage>]?")
       else if argType is "color"
         colors.push sass2rgba arg
-        initPositions.push null
+        positions.push null
 
     # Set defaults for positions start and end
-    positions = initPositions.slice(0)
     positions[0] = 0 if positions[0] is null
     positions[positions.length - 1] = 1 if positions[positions.length - 1] is null
 
@@ -173,6 +170,8 @@ module.exports =
               increment = ((nextValue - positions[lastNonnullIndex]) * 1.0)/(numberOfNulls + 1)
             break
         positions[index] = increment * nullIndex
+        # Force rendering of inferred non 0, 1 initial positions in case we add points asymetrically
+        initPositions[index] = increment * nullIndex
       else
         nullIndex = 0
         lastNonnullIndex = index
@@ -182,7 +181,7 @@ module.exports =
         else if value > maxValue
           maxValue = value
 
-    # Interpolate additional points in specified color space
+    # # Interpolate additional points in specified color space
     while colors.length < settings.stops
       maxDistance = 0
       maxDistanceStartIndex = null
@@ -196,7 +195,6 @@ module.exports =
         newColor = chroma.mix(colors[maxDistanceStartIndex], colors[maxDistanceStartIndex + 1], .5, settings.mode)._rgb
         colors.splice(maxDistanceStartIndex + 1, 0, newColor)
         positions.splice(maxDistanceStartIndex + 1, 0, newPosition)
-        initPositions.splice(maxDistanceStartIndex + 1, 0, null)
       else
         break
 
@@ -205,7 +203,7 @@ module.exports =
     str += direction + ", " if direction
     for color, i in colors
       str += rgba2str color
-      str += " " + initPositions[i] * 100 + "%" if initPositions[i]
+      str += " " + positions[i] * 100 + "%"
       str += ", " if i < colors.length - 1
     str += ")"
     sass.types.String(str)

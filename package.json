@@ -1,6 +1,6 @@
 {
   "name": "chromatic-sass",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "chroma.js based utilities in node-sass",
   "main": "lib/main.js",
   "scripts": {
