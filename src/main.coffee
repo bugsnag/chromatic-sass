@@ -21,11 +21,15 @@ sass2hex = (color) ->
 sass2rgba = (color) ->
   [color.getR(), color.getG(), color.getB(), color.getA()]
 
+roundRgba = (rgba) ->
+  [Math.round(rgba[0]), Math.round(rgba[1]), Math.round(rgba[2]), rgba[3]]
+
 rgba2str = (rgba) ->
+  rgba = roundRgba(rgba)
   "rgba(#{rgba[0]}, #{rgba[1]}, #{rgba[2]}, #{rgba[3]})"
 
 rgba2sass = (rgba) ->
-  sass.types.Color rgb[0], rgb[1], rgb[2], rgb[3]
+  sass.types.Color roundRgba(rgba)
 
 # Represent a SassList as a JS array
 list2arr = (sassList) ->
