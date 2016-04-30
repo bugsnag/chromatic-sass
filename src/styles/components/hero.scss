@@ -1,0 +1,23 @@
+.Hero {
+  height: 100vh;
+  &-content {
+    max-width: 50rem;
+    margin: 2rem auto;
+  }
+  &-header {
+    font-size: 2.618rem;
+  }
+  &-subheader {
+    font-size: 1.618rem;
+  }
+  &-gradient {
+    height: 6rem;
+    margin: 2rem 0;
+    &--linear {
+      background-image: linear-gradient(to right, hsl(0, 100, 50), hsl(180, 100, 50));
+    }
+    &--chromatic {
+      background-image: chromatic-gradient(to right, hsl(0, 100, 50), hsl(180, 100, 50));
+    }
+  }
+}
