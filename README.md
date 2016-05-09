@@ -1,5 +1,7 @@
 # Chromatic
-Advanced color manipulation for node sass. *[Read the API docs &rsaquo;](#)*
+Advanced color manipulation for node sass.
+
+#### [Read the API docs &rsaquo;](docs)
 
 ## Quick start
 Chromatic is a node sass wrapper around [Chroma.js](https://github.com/gka/chroma.js/) with a few Sass-specific additions.
@@ -22,7 +24,7 @@ npm install chromatic-sass
 ```
 
 ### Usage
-To use Chromatic, provide it as part of your node-sass configuration.
+To use Chromatic, provide it in your `node-sass` configuration.
 
 ```javascript
 var sass = require "node-sass"
@@ -34,7 +36,7 @@ sass.render({
 }, function(err, result) { /*...*/ });
 ```
 
-`chromatic-sass` returns an object defining [custom node-sass functions](https://github.com/sass/node-sass#functions--v300---experimental) that can be used with any node-sass build system. To provide your own custom functions alongside chromatic, merge `chromatic` with your custom functions object.
+`chromatic-sass` returns an object defining [custom node-sass functions](https://github.com/sass/node-sass#functions--v300---experimental) that can be used with any `node-sass` build system. To provide your own custom functions alongside chromatic, merge `chromatic` with your custom functions object before providing it in your `node-sass` configuration.
 
 ```javascript
 var _ = require "lodash";
