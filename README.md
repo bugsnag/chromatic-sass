@@ -1,10 +1,10 @@
 # Chromatic
 Advanced color manipulation for node sass.
 
-#### [Read the API docs &rsaquo;](docs)
+##### [Read the API docs &rsaquo;](../docs)
 
 ## Quick start
-Chromatic is a node sass wrapper around [Chroma.js](https://github.com/gka/chroma.js/) with a few Sass-specific additions.
+Chromatic is a node-sass wrapper around [Chroma.js](https://github.com/gka/chroma.js/) with a few Sass-specific additions for web designers.
 
 Here are a few things Chromatic can do for you:
 
@@ -13,7 +13,7 @@ Here are a few things Chromatic can do for you:
 - Define colors in a wide range of formats
 - Analyze and manipulate colors
 
-Because of it's ability to support the LAB color space, Chromatic's color manipulation abilities can act as drop-in improvements for popular native Sass color manipulation functions e.g. `darken`, `saturate`, and `mix`.
+Because of it's ability to support the LAB color space, Chromatic's color manipulation abilities can act as drop-in improvements for Sass's native color manipulation functions such as `darken`, `saturate`, and `mix`.
 
 
 ### Install
@@ -24,7 +24,7 @@ npm install chromatic-sass
 ```
 
 ### Usage
-To use Chromatic, provide it in your `node-sass` configuration.
+To use Chromatic, provide it in your node-sass configuration.
 
 ```javascript
 var sass = require "node-sass"
@@ -36,7 +36,7 @@ sass.render({
 }, function(err, result) { /*...*/ });
 ```
 
-`chromatic-sass` returns an object defining [custom node-sass functions](https://github.com/sass/node-sass#functions--v300---experimental) that can be used with any `node-sass` build system. To provide your own custom functions alongside chromatic, merge `chromatic` with your custom functions object before providing it in your `node-sass` configuration.
+Chromatic returns an object defining [custom functions](https://github.com/sass/node-sass#functions--v300---experimental) that can be used with any node-sass build system. To provide your own custom javascript Sass functions alongside chromatic, merge `chromatic` with your custom functions object before providing it in your node-sass configuration.
 
 ```javascript
 var _ = require "lodash";
