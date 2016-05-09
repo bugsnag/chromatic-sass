@@ -212,7 +212,6 @@ module.exports =
     str += ")"
     sass.types.String(str)
 
-
   "chromatic-scale($argslist...)": (argslist) ->
     defaults =
       mode: "lab"
