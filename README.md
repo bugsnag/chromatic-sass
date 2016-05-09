@@ -1,7 +1,5 @@
 # Chromatic
-Advanced color manipulation for node sass.
-
-##### [Read the API docs &rsaquo;](api.md)
+Advanced color manipulation for node sass. **[Read the API docs &rsaquo;](api.md)**
 
 ## Quick start
 Chromatic is a node-sass wrapper around [Chroma.js](https://github.com/gka/chroma.js/) with a few Sass-specific additions for web designers.
