@@ -21,8 +21,8 @@ Accepts an options map as a final parameter with keys
 $foo: chromatic-gradient(red, teal);
 // => linear-gradient(hsl(0, 100%, 50%) 0%, hsl(9, 85%, 51%) 12.5%, hsl(12, 69%, 51%) 25%, hsl(15, 55%, 50%) 37.5%, hsl(18, 41%, 48%) 50%, hsl(49, 10%, 44%) 75%, hsl(180, 100%, 25%) 100%)
 
-$foo: chromatic-gradient(red, green 75%, teal (stops: 5, mode: 'lch'));
-// => linear-gradient(hsl(0, 100%, 50%) 0%, hsl(28, 100%, 39%) 18.75%, hsl(46, 100%, 29%) 37.5%, hsl(120, 100%, 25%) 75%, hsl(180, 100%, 25%) 100%)
+$foo: chromatic-gradient(to right, red, green 75%, teal (stops: 5, mode: 'lch'));
+// => linear-gradient(to right, hsl(0, 100%, 50%) 0%, hsl(28, 100%, 39%) 18.75%, hsl(46, 100%, 29%) 37.5%, hsl(120, 100%, 25%) 75%, hsl(180, 100%, 25%) 100%)
 ```
 
 ### chromatic-scale
@@ -192,7 +192,7 @@ Allows you to adjust the luminance of a color if a value is provided. The source
 $foo: chromatic-luminance(green, .5);
 // => RGB(144, 202, 144)
 ```
-By default, this interpolation is done in RGB, but you can interpolate in different color spaces by passing the space as third argument:
+By default, this interpolation is done in RGB, but you can interpolate in different color spaces by passing the space as a third argument:
 ```Sass
 $foo: chromatic-luminance(green, .5, 'lab');
 // => RGB(160, 199, 145)
