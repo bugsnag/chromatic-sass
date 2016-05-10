@@ -7,7 +7,8 @@ Advanced color manipulation for node sass. **[Read the quick-start guide &rsaquo
 ```Sass
 @function chromatic-hsv($h, $s, $v, $a: "") { ... }
 ```
-<hue: (0-360)>, <saturation: (0-1)>, <value: (0-1)> [, <alpha: (0-1)>]
+
+  <hue: (0-360)>, <saturation: (0-1)>, <value: (0-1)> [, <alpha: (0-1)>]
 
 ##### Example
 ```Sass
