@@ -18,10 +18,10 @@ Accepts an options map as a final argument with keys
 ```
 ```Sass
 $foo: chromatic-gradient(red, teal);
-// => linear-gradient(hsl(0, 100%, 50%) 0%, hsl(9, 85%, 51%) 12.5%, hsl(12, 69%, 51%) 25%, hsl(15, 55%, 50%) 37.5%, hsl(18, 41%, 48%) 50%, hsl(49, 10%, 44%) 75%, hsl(180, 100%, 25%) 100%)
+// => linear-gradient(rgb(255, 0, 0) 0%, rgb(236, 56, 25) 12.5%, rgb(216, 77, 42) 25%, rgb(196, 92, 57) 37.5%, rgb(174, 103, 72) 50%, rgb(122, 118, 100) 75%, rgb(0, 128, 128) 100%)
 
 $foo: chromatic-gradient(to right, red, green 75%, teal, (stops: 5, mode: 'lch'));
-// => linear-gradient(to right, hsl(0, 100%, 50%) 0%, hsl(28, 100%, 39%) 18.75%, hsl(46, 100%, 29%) 37.5%, hsl(120, 100%, 25%) 75%, hsl(180, 100%, 25%) 100%)
+// => linear-gradient(to right, rgb(255, 0, 0) 0%, rgb(198, 94, 0) 18.75%, rgb(149, 114, 0) 37.5%, rgb(0, 128, 0) 75%, rgb(0, 128, 128) 100%)
 ```
 
 ### chromatic-scale
@@ -46,7 +46,7 @@ $foo: chromatic-scale(red, teal, (stops: 7));
 // => (0: red, 1: #e5401f, 2: #cb5735, 3: #ae6748, 4: #8d715b, 5: #647a6d, 6: teal)
 ```
 
-## Chroma.js wrapper functions
+## Color spaces
 
 ### chromatic-hsv
 ```Sass
@@ -55,7 +55,7 @@ $foo: chromatic-scale(red, teal, (stops: 7));
 ```
 ```Sass
 $foo: chromatic-hsv(0, 1, 1);
-// => rgb(255, 0, 0)
+// => red
 ```
 
 ### chromatic-lab
@@ -64,8 +64,8 @@ $foo: chromatic-hsv(0, 1, 1);
 @function chromatic-lab($l, $a, $b, $alpha: '') { ... }
 ```
 ```Sass
-$foo: chromatic-lab(0, 0, 60);
-// => RGB(255, 0, 0)
+$foo: chromatic-lab(50, 0, 60);
+// => #8f7500
 ```
 
 ### chromatic-hcl
@@ -118,8 +118,10 @@ Light 2000K, bright sunlight 6000K. Goes to about 20000K. Based on [Neil Bartlet
 ```
 ```Sass
 $foo: chromatic-temperature(2000);
-// => RGB(255, 139, 0)
+// => #ff8b14
 ```
+
+## Color manipulation
 
 ### chromatic-mix
 Mix two colors, in a specified color space. By default mixes at position 0.5, equidistant between the provided colors, in the perceptually uniform Lab space. Valid spaces are `lab`, `hcl`, `lch`, `cmyk`, `rgb`, `hsl`.

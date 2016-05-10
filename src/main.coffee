@@ -24,13 +24,13 @@ rgb2sass = (rgb) ->
   color.setR(rgb[0])
   color.setG(rgb[1])
   color.setB(rgb[2])
-  if rgb[3]
+  if rgb[3] && rgb[3] != 1
     color.setA(rgb[3])
   color
 
 rgb2str = (rgb) ->
   rgb = roundRgb(rgb)
-  if rgb[3]
+  if rgb[3] && rgb[3] != 1
     "rgba(#{rgb[0]}, #{rgb[1]}, #{rgb[2]}, #{rgb[3]})"
   else
     "rgb(#{rgb[0]}, #{rgb[1]}, #{rgb[2]})"
@@ -48,8 +48,8 @@ module.exports =
   "chromatic-lch($x, $y, $z, $alpha: 1)": (x, y, z, alpha) ->
     rgb2sass chroma.lch(x.getValue(), y.getValue(), z.getValue(), alpha.getValue())._rgb
 
-  "chromatic-hcl($x, $y, $z, $alpha: 1)": (x, y, z, alpha) ->
-    rgb2sass chroma.hcl(x.getValue(), y.getValue(), z.getValue(), alpha.getValue())._rgb
+  "chromatic-hcl($h, $c, $l, $alpha: 1)": (h, c, l, alpha) ->
+    rgb2sass chroma.lch(l.getValue(), c.getValue(), h.getValue(), alpha.getValue())._rgb
 
   "chromatic-cmyk($c, $m, $y, $k, $alpha: 1)": (c, m, y, k, alpha) ->
     rgb2sass chroma.cmyk(c.getValue(), m.getValue(), y.getValue(), k.getValue(), alpha.getValue())._rgb
@@ -57,9 +57,9 @@ module.exports =
   "chromatic-gl($r, $g, $b, $alpha: 1)": (r, g, b, alpha) ->
     rgb2sass chroma.gl(r.getValue(), g.getValue(), b.getValue(), alpha.getValue())._rgb
 
-  "chromatic-temperature($temp)": (color) ->
-    rgb = sass2rgb color
-    rgb2sass chroma.temperature(rgb)._rgb
+  "chromatic-temperature($temperature)": (temperature) ->
+    console.log temperature.getValue()
+    rgb2sass chroma.temperature(temperature.getValue())._rgb
 
   "chromatic-color-temperature($color)": (color) ->
     rgb = sass2rgb color
