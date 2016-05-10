@@ -20,12 +20,12 @@ Accepts an options map as a final argument with keys
 $foo: chromatic-gradient(red, teal);
 // => linear-gradient(hsl(0, 100%, 50%) 0%, hsl(9, 85%, 51%) 12.5%, hsl(12, 69%, 51%) 25%, hsl(15, 55%, 50%) 37.5%, hsl(18, 41%, 48%) 50%, hsl(49, 10%, 44%) 75%, hsl(180, 100%, 25%) 100%)
 
-$foo: chromatic-gradient(to right, red, green 75%, teal (stops: 5, mode: 'lch'));
+$foo: chromatic-gradient(to right, red, green 75%, teal, (stops: 5, mode: 'lch'));
 // => linear-gradient(to right, hsl(0, 100%, 50%) 0%, hsl(28, 100%, 39%) 18.75%, hsl(46, 100%, 29%) 37.5%, hsl(120, 100%, 25%) 75%, hsl(180, 100%, 25%) 100%)
 ```
 
 ### chromatic-scale
-Generates a sequence of colors, interpolated at `n` equidistant points between two source colors. By default, interpolation is done in the 'lab' space, so that steps between the interpolated colors appear linearly.
+Generates a sequence of colors, interpolated at `n` equidistant points between two source colors. By default, interpolation is done in the 'lab' space, so that steps between the interpolated colors appear linearly. It's an easy way to generate nice color palettes.
 
 Returns an array-like Sass map, with keys set as index values.
 
@@ -42,7 +42,7 @@ See [chroma.js color scales](http://gka.github.io/chroma.js/#color-scales) for m
 // <color0>, <color1> [, <options>]
 ```
 ```Sass
-$foo: chromatic-gradient(red, teal, (stops: 7));
+$foo: chromatic-scale(red, teal, (stops: 7));
 // => (0: red, 1: #e5401f, 2: #cb5735, 3: #ae6748, 4: #8d715b, 5: #647a6d, 6: teal)
 ```
 

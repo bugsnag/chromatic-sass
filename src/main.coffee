@@ -2,103 +2,123 @@ extend = require "extend"
 chroma = require "chroma-js"
 sass = require "node-sass"
 sassUtils = require("node-sass-utils")(sass)
-sassport = require "sassport"
 isEqual = require('lodash.isEqual')
 
-# Generate a sass color from an rgb color
-rgb2sass = (rgb) ->
-  sass.types.Color rgb[0], rgb[1], rgb[2]
-
-# Generate an rgb color from a sass color
-sass2rgb = (color) ->
-  chroma(color.getR(), color.getG(), color.getB()).rgb()
-
-# Generate a hex color from a sass color
+# Generate a hex color string from a sass color
 sass2hex = (color) ->
   chroma(color.getR(), color.getG(), color.getB()).hex()
 
-# Generate a hex color from a sass color
-sass2rgba = (color) ->
+# Generate a rgb array from a sass color
+sass2rgb = (color) ->
   [color.getR(), color.getG(), color.getB(), color.getA()]
 
-roundRgba = (rgba) ->
-  [Math.round(rgba[0]), Math.round(rgba[1]), Math.round(rgba[2]), rgba[3]]
+roundRgb = (rgb) ->
+  arr = [Math.round(rgb[0]), Math.round(rgb[1]), Math.round(rgb[2])]
+  if rgb[3]
+    arr.push rgb[3]
+  arr
 
-rgba2str = (rgba) ->
-  rgba = roundRgba(rgba)
-  "rgba(#{rgba[0]}, #{rgba[1]}, #{rgba[2]}, #{rgba[3]})"
+rgb2sass = (rgb) ->
+  rgb = roundRgb(rgb)
+  color = new sass.types.Color
+  color.setR(rgb[0])
+  color.setG(rgb[1])
+  color.setB(rgb[2])
+  if rgb[3]
+    color.setA(rgb[3])
+  color
 
-rgba2sass = (rgba) ->
-  sass.types.Color roundRgba(rgba)
+rgb2str = (rgb) ->
+  rgb = roundRgb(rgb)
+  if rgb[3]
+    "rgba(#{rgb[0]}, #{rgb[1]}, #{rgb[2]}, #{rgb[3]})"
+  else
+    "rgb(#{rgb[0]}, #{rgb[1]}, #{rgb[2]})"
 
-# Represent a SassList as a JS array
 list2arr = (sassList) ->
   arr = (sassList.getValue(i) for i in [0...sassList.getLength()])
 
 module.exports =
-  "chromatic($argslist...)": sassport.wrap (argslist) ->
-    # TODO: unpack
-    chroma.lab(l, a, b).hex()
+  "chromatic-hsv($x, $y, $z, $alpha: 1)": (x, y, z, alpha) ->
+    rgb2sass chroma.hsv(x.getValue(), y.getValue(), z.getValue(), alpha.getValue())._rgb
 
-  "chromatic-hsv($x, $y, $z)": sassport.wrap (x, y, z) ->
-    chroma.hsv(x, y, z).hex()
+  "chromatic-lab($x, $y, $z, $alpha: 1)": (x, y, z, alpha) ->
+    rgb2sass chroma.lab(x.getValue(), y.getValue(), z.getValue(), alpha.getValue())._rgb
 
-  "chromatic-lab($x, $y, $z)": sassport.wrap (x, y, z) ->
-    chroma.lab(x, y, z).hex()
+  "chromatic-lch($x, $y, $z, $alpha: 1)": (x, y, z, alpha) ->
+    rgb2sass chroma.lch(x.getValue(), y.getValue(), z.getValue(), alpha.getValue())._rgb
 
-  "chromatic-lch($x, $y, $z)": sassport.wrap (x, y, z) ->
-    chroma.lch(x, y, z).hex()
+  "chromatic-hcl($x, $y, $z, $alpha: 1)": (x, y, z, alpha) ->
+    rgb2sass chroma.hcl(x.getValue(), y.getValue(), z.getValue(), alpha.getValue())._rgb
 
-  "chromatic-hcl($x, $y, $z)": sassport.wrap (x, y, z) ->
-    chroma.hcl(x, y, z).hex()
+  "chromatic-cmyk($c, $m, $y, $k, $alpha: 1)": (c, m, y, k, alpha) ->
+    rgb2sass chroma.cmyk(c.getValue(), m.getValue(), y.getValue(), k.getValue(), alpha.getValue())._rgb
 
-  "chromatic-cmyk($c, $m, $y, $k)": sassport.wrap (c, m, y, k) ->
-    chroma.cmyk(c, m, y, k).hex()
+  "chromatic-gl($r, $g, $b, $alpha: 1)": (r, g, b, alpha) ->
+    rgb2sass chroma.gl(r.getValue(), g.getValue(), b.getValue(), alpha.getValue())._rgb
 
-  "chromatic-gl($r, $g, $b, $a: 1)": sassport.wrap (r, g, b, a) ->
-    chroma.gl(r, g, b, a).hex()
+  "chromatic-temperature($temp)": (color) ->
+    rgb = sass2rgb color
+    rgb2sass chroma.temperature(rgb)._rgb
 
-  "chromatic-color-temperature($color)": sassport.wrap (color) ->
-    chroma(sass2hex(color)).temperature()
+  "chromatic-color-temperature($color)": (color) ->
+    rgb = sass2rgb color
+    sass.types.Number chroma(rgb).temperature()
 
-  "chromatic-color-darken($color, $value: '')": sassport.wrap (color, value) ->
-    chroma(sass2hex(color)).darken((value if value?)).hex()
+  "chromatic-color-darken($color, $value: '')": (color, value) ->
+    value = value.getValue()
+    rgb = sass2rgb color
+    rgb2sass chroma(rgb).darken((value if value?))._rgb
 
-  "chromatic-color-lighten($color, $value: '')": sassport.wrap (color, value) ->
-    chroma(sass2hex(color)).lighten((value if value?)).hex()
+  "chromatic-color-lighten($color, $value: '')": (color, value) ->
+    value = value.getValue()
+    rgb = sass2rgb color
+    rgb2sass chroma(rgb).lighten((value if value?))._rgb
 
-  "chromatic-color-saturate($color, $value: '')": sassport.wrap (color, value) ->
-    chroma(sass2hex(color)).saturate((value if value?)).hex()
+  "chromatic-color-saturate($color, $value: '')": (color, value) ->
+    value = value.getValue()
+    rgb = sass2rgb color
+    rgb2sass chroma(rgb).saturate((value if value?))._rgb
 
-  "chromatic-color-desaturate($color, $value: '')": sassport.wrap (color, value) ->
-    chroma(sass2hex(color)).desaturate((value if value?)).hex()
+  "chromatic-color-desaturate($color, $value: '')": (color, value) ->
+    value = value.getValue()
+    rgb = sass2rgb color
+    rgb2sass chroma(rgb).desaturate((value if value?))._rgb
 
-  "chromatic-color-set($color, $channel, $value)": sassport.wrap (color, channel, value) ->
-    chroma(sass2hex(color)).set(channel, value).hex()
+  "chromatic-color-set($color, $channel, $value)": (color, channel, value) ->
+    channel = channel.getValue()
+    value = value.getValue()
+    rgb = sass2rgb color
+    rgb2sass chroma(rgb).set(channel, value)._rgb
 
-  "chromatic-color-get($color, $channel)": sassport.wrap (color, channel) ->
-    chroma(sass2hex(color)).get(channel)
+  "chromatic-color-get($color, $channel)": (color, channel) ->
+    channel = channel.getValue()
+    rgb = sass2rgb color
+    sass.types.Number chroma(rgb).get(channel)
 
-  "chromatic-color-luminance($color, $luminance: '', $mode: '')": sassport.wrap (color, luminance, mode) ->
+  "chromatic-color-luminance($color, $luminance: '', $mode: '')": (color, luminance, mode) ->
+    rgb = sass2rgb color
+    luminance = luminance.getValue()
+    mode = mode.getValue()
     if luminance
       if mode
-        chroma(sass2hex(color)).luminance(luminance, mode).hex()
+        rgb2sass chroma(rgb).luminance(luminance, mode)._rgb
       else
-        chroma(sass2hex(color)).luminance(luminance).hex()
+        rgb2sass chroma(rgb).luminance(luminance)._rgb
     else
-      chroma(sass2hex(color)).luminance()
+      sass.types.Number chroma(rgb).luminance()
 
-  "chromatic-mix($color0, $color1, $position: .5, $mode: 'lab')": sassport.wrap (color0, color1, position, mode) ->
-    chroma.mix(sass2hex(color0), sass2hex(color1), position, mode).hex()
+  "chromatic-mix($color0, $color1, $position: .5, $mode: 'lab')": (color0, color1, position, mode) ->
+    rgb2sass chroma.mix(sass2rgb(color0), sass2rgb(color1), position.getValue(), mode.getValue())._rgb
 
-  "chromatic-blend($color0, $color1, $blendMode)": sassport.wrap (color0, color1, blendMode) ->
-    chroma.blend(sass2hex(color0), sass2hex(color1), blendMode).hex()
+  "chromatic-blend($color0, $color1, $blendMode)": (color0, color1, blendMode) ->
+    rgb2sass chroma.blend(sass2rgb(color0), sass2rgb(color1), blendMode.getValue())._rgb
 
-  "chromatic-random()": sassport.wrap () ->
-    chroma.random().hex()
+  "chromatic-random()": () ->
+    rgb2sass chroma.random()._rgb
 
-  "chromatic-contrast($color0, $color1)": sassport.wrap (color0, color1) ->
-    chroma.contrast(sass2hex(color0), sass2hex(color1))
+  "chromatic-contrast($color0, $color1)": (color0, color1) ->
+    sass.types.Number chroma.contrast(sass2rgb(color0), sass2rgb(color1))
 
   "chromatic-gradient($argslist...)": (argslist) ->
     defaults =
@@ -144,12 +164,12 @@ module.exports =
         if sassUtils.typeOf(arg[0]) is "color" and sassUtils.typeOf(arg[1]) is "number" and arg.length is 2
           if arg[1].getUnit() isnt "%"
             return sass.types.Error("Chromatic gradient color-stop initPositions must be provided as percentages")
-          colors.push sass2rgba arg[0]
+          colors.push sass2rgb arg[0]
           positions.push arg[1].getValue() / 100
         else
           return sass.types.Error("Chromatic gradient color stops must take the form: <color> [<percentage>]?")
       else if argType is "color"
-        colors.push sass2rgba arg
+        colors.push sass2rgb arg
         positions.push null
 
     # Set defaults for positions start and end
@@ -206,7 +226,7 @@ module.exports =
     str = settings.type + "-gradient("
     str += direction + ", " if direction
     for color, i in colors
-      str += rgba2str color
+      str += rgb2str color
       str += " " + positions[i] * 100 + "%"
       str += ", " if i < colors.length - 1
     str += ")"
