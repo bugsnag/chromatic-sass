@@ -72,7 +72,7 @@ $foo: chromatic-temperature(2000);
 Mix two colors, by default in Lab color space.
 ```Sass
 // <color0>, <color1> [, <position: (0-1)>] [, <mode: 'lab' || 'rgb' || 'hsl' ...>]
-// @function chromatic-mix($color0, $color1, $position: '.5', $mode: 'lab') { ... }
+@function chromatic-mix($color0, $color1, $position: '.5', $mode: 'lab') { ... }
 ```
 ```Sass
 $foo: chromatic-temperature(2000);
