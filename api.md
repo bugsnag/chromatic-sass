@@ -49,7 +49,7 @@ $foo: chromatic-gradient(red, teal, (stops: 7));
 // => (0: red, 1: #e5401f, 2: #cb5735, 3: #ae6748, 4: #8d715b, 5: #647a6d, 6: teal)
 ```
 
-## Color spaces
+## Chroma.js functions
 
 ### chromatic-hsv
 ```Sass
@@ -123,8 +123,6 @@ Light 2000K, bright sunlight 6000K. Goes to about 20000K. Based on [Neil Bartlet
 $foo: chromatic-temperature(2000);
 // => RGB(255, 139, 0)
 ```
-
-## Color manipulation
 
 ### chromatic-mix
 Mix two colors, in a specified color space. By default mixes at position 0.5, equidistant between the provided colors, in the perceptually uniform Lab space. Valid spaces are `lab`, `hcl`, `lch`, `cmyk`, `rgb`, `hsl`.
