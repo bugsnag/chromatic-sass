@@ -1,13 +1,12 @@
-# Chromatic API Docs
-Advanced color manipulation for node sass. **[Read the quick-start guide &rsaquo;](README.md)**
+# Chromatic API Documentation
+For installation and build instructions **[read the quick-start guide &rsaquo;](README.md)**
 
 ## Color spaces
 
 ### chromatic-hsv
 ```Sass
-@function chromatic-hsv($h, $s, $v, $a: "") { ... }
-
 // <hue: (0-360)>, <saturation: (0-1)>, <value: (0-1)> [, <alpha: (0-1)>]
+@function chromatic-hsv($h, $s, $v, $a: "") { ... }
 ```
 
 ##### Example
