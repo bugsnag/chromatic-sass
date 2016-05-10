@@ -6,6 +6,7 @@ For installation and build instructions **[read the quick-start guide &rsaquo;](
 ### chromatic-hsv
 ```Sass
 // <hue: (0-360)>, <saturation: (0-1)>, <value: (0-1)> [, <alpha: (0-1)>]
+@function chromatic-hsv($h, $s, $v, $alpha: '') { ... }
 ```
 ```Sass
 $foo: chromatic-hsv(0, 1, 1);
@@ -15,6 +16,7 @@ $foo: chromatic-hsv(0, 1, 1);
 ### chromatic-lab
 ```Sass
 // <lightness: (0-100)>, <a: (-128-127)>, <b: (-128-127)> [, <alpha: (0-1)>]
+@function chromatic-lab($l, $a, $b, $alpha: '') { ... }
 ```
 ```Sass
 $foo: chromatic-lab(0, 0, 60);
@@ -25,14 +27,18 @@ $foo: chromatic-lab(0, 0, 60);
 A cylindrical tranformation of the Lab color space, LCh combines the perceptual uniformity of Lab with the convenience of representing hue in 360 degrees like in HSL.
 ```Sass
 // <hue: (0-360)>, <lightness: (0-100)>, <chroma: (0-100)> [, <alpha: (0-1)>]
+@function chromatic-hcl($h, $c, $l, $alpha: '') { ... }
+```
+```Sass
 $foo: chromatic-hcl(130, 40, 80);
 // => RGB(169, 211, 137)
 ```
 
 ### chromatic-lch
-A different ordering of the hcl variables
+A different ordering of the hcl variables.
 ```Sass
 // <lightness: (0-100)>, <chroma: (0-100)>, hue: (0-360)> [, <alpha: (0-1)>]
+@function chromatic-lch($l, $c, $h, $alpha: '') { ... }
 ```
 ```Sass
 $foo: chromatic-lch(0, 1, 0);
@@ -42,14 +48,18 @@ $foo: chromatic-lch(0, 1, 0);
 ### chromatic-cmyk
 ```Sass
 // <cyan: (0-100)>, <magenta: (0-100)>, yellow: (0-100)>, black: (0-100)> [, <alpha: (0-1)>]
+@function chromatic-cmyk($c, $m, $y, $k, $alpha: '') { ... }
+```
+```Sass
 $foo: chromatic-cmyk(0.2, 0.8, 0, 0);
 // => RGB(206, 30, 255)
 ```
 
 ### chromatic-gl
-A variant of RGB(A), with the only difference that the components are normalized to the range of 0..1.
+A variant of RGB(A), the components normalized to the range of 0..1.
 ```Sass
-// <r: (0-1)>, <g: (0-1)>, <b: (0-1)> [, <alpha: (0-1)>]
+// <red: (0-1)>, <green: (0-1)>, <blue: (0-1)> [, <alpha: (0-1)>]
+@function chromatic-gl($r, $g, $b, $alpha: '') { ... }
 ```
 ```Sass
 $foo: chromatic-gl(0.6, 0, 0.8, 0.5);
@@ -69,12 +79,28 @@ $foo: chromatic-temperature(2000);
 ## Color manipulation
 
 ### chromatic-mix
-Mix two colors, by default in Lab color space.
+Mix two colors, in a specified color space. By default mixes at position 0.5, equidistant between the provided colors, in the perceptually uniform Lab space. Valid spaces are `lab`, `hcl`, `lch`, `cmyk`, `rgb`, `hsl`.
 ```Sass
-// <color0>, <color1> [, <position: (0-1)>] [, <mode: 'lab' || 'rgb' || 'hsl' ...>]
+// <color0>, <color1> [, <position: (0-1)>] [, <mode>]
 @function chromatic-mix($color0, $color1, $position: '.5', $mode: 'lab') { ... }
 ```
 ```Sass
-$foo: chromatic-temperature(2000);
-// => RGB(255, 139, 0)
+$foo: chromatic-mix(red, blue);
+// => RGB(204, 0, 137)
+$foo: chromatic-mix(red, blue, .5 'rgb');
+// => RGB(129, 0, 130)
+```
+
+
+### chromatic-blend
+Blends two colors using RGB channel-wise blend functions. Valid blend modes are `multiply`, `darken`, `lighten`, `screen`, `overlay`, `burn`, and `dogde`.
+```Sass
+// <color0>, <color1>, <mode>
+@function chromatic-mix($color0, $color1, $mode) { ... }
+```
+```Sass
+$foo: chromatic-mix(red, blue);
+// => RGB(204, 0, 137)
+$foo: chromatic-mix(red, blue, .5 'rgb');
+// => RGB(129, 0, 130)
 ```
