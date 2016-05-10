@@ -15,7 +15,6 @@ Accepts an options map as a final argument with keys
 
 ```Sass
 // <css-gradient> [, <options>]
-@function chromatic-gradient($argslist...) { ... }
 ```
 ```Sass
 $foo: chromatic-gradient(red, teal);
@@ -41,9 +40,7 @@ See [chroma.js color scales](http://gka.github.io/chroma.js/#color-scales) for m
 
 ```Sass
 // <color0>, <color1> [, <options>]
-@function chromatic-scale($color0, color1, options: ()) { ... }
 ```
-
 ```Sass
 $foo: chromatic-gradient(red, teal, (stops: 7));
 // => (0: red, 1: #e5401f, 2: #cb5735, 3: #ae6748, 4: #8d715b, 5: #647a6d, 6: teal)
