@@ -46,7 +46,7 @@ $foo: chromatic-gradient(red, teal, (stops: 7));
 // => (0: red, 1: #e5401f, 2: #cb5735, 3: #ae6748, 4: #8d715b, 5: #647a6d, 6: teal)
 ```
 
-## Chroma.js functions
+## Chroma.js wrapper functions
 
 ### chromatic-hsv
 ```Sass
