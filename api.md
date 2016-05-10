@@ -241,11 +241,11 @@ $foo: chromatic-color-saturate(orange, 2);
 // => RGB(255, 157, 0)
 ```
 
-### chromatic-color-saturate
+### chromatic-color-desaturate
 Desaturates a color in the `Lch` color space.
 ```Sass
 // <color> [, <value>]
-@function chromatic-blend($color0, $value: 1) { ... }
+@function chromatic-color-desaturate($color0, $value: 1) { ... }
 ```
 ```Sass
 $foo: chromatic-color-desaturate(orange, 2);
