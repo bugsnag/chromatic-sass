@@ -2,13 +2,13 @@
 Advanced color manipulation for node sass. **[Read the API docs &rsaquo;](api.md)**
 
 ## Quick start
-Chromatic is a node-sass wrapper around [Chroma.js](https://github.com/gka/chroma.js/) with a few Sass-specific additions for web designers.
+Chromatic is a node-sass wrapper around [Chroma.js](https://github.com/gka/chroma.js/) with a few Sass-specific additions.
 
 Here are a few things Chromatic can do for you:
 
 - Create perceptually uniform gradients using the conventional CSS3 linear-gradient syntax
-- Procedurally generate nice [color scales](#link-to-blog-post)
-- Define colors in a wide range of formats
+- Procedurally generate aesthetically pleasing [color scales](#link-to-blog-post)
+- Define colors in a wide range of color spaces
 - Analyze and manipulate colors
 
 Because of it's ability to support the LAB color space, Chromatic's color manipulation abilities can act as drop-in improvements for Sass's native color manipulation functions such as `darken`, `saturate`, and `mix`.
