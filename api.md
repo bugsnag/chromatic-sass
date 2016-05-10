@@ -6,6 +6,8 @@ For installation and build instructions **[read the quick-start guide &rsaquo;](
 ### chromatic-hsv
 ```Sass
 // <hue: (0-360)>, <saturation: (0-1)>, <value: (0-1)> [, <alpha: (0-1)>]
+```
+```Sass
 $foo: chromatic-hsv(0, 1, 1);
 // => rgb(255, 0, 0)
 ```
@@ -13,6 +15,8 @@ $foo: chromatic-hsv(0, 1, 1);
 ### chromatic-lab
 ```Sass
 // <lightness: (0-100)>, <a: (-128-127)>, <b: (-128-127)> [, <alpha: (0-1)>]
+```
+```Sass
 $foo: chromatic-lab(0, 0, 60);
 // => RGB(255, 0, 0)
 ```
@@ -29,6 +33,8 @@ $foo: chromatic-hcl(130, 40, 80);
 A different ordering of the hcl variables
 ```Sass
 // <lightness: (0-100)>, <chroma: (0-100)>, hue: (0-360)> [, <alpha: (0-1)>]
+```
+```Sass
 $foo: chromatic-lch(0, 1, 0);
 // => RGB(255, 0, 0)
 ```
@@ -44,6 +50,8 @@ $foo: chromatic-cmyk(0.2, 0.8, 0, 0);
 A variant of RGB(A), with the only difference that the components are normalized to the range of 0..1.
 ```Sass
 // <r: (0-1)>, <g: (0-1)>, <b: (0-1)> [, <alpha: (0-1)>]
+```
+```Sass
 $foo: chromatic-gl(0.6, 0, 0.8, 0.5);
 // => RGBA(154, 0, 207, 0.5)
 ```
@@ -52,6 +60,8 @@ $foo: chromatic-gl(0.6, 0, 0.8, 0.5);
 Light 2000K, bright sunlight 6000K. Goes to about 20000K. Based on [Neil Bartlett's implementation](https://github.com/neilbartlett/color-temperature).
 ```Sass
 // <temperature: (0-20000)>
+```
+```Sass
 $foo: chromatic-temperature(2000);
 // => RGB(255, 139, 0)
 ```
@@ -63,6 +73,8 @@ Mix two colors, by default in Lab color space.
 ```Sass
 // <color0>, <color1> [, <position: (0-1)>] [, <mode: 'lab' || 'rgb' || 'hsl' ...>]
 // @function chromatic-mix($color0, $color1, $position: '.5', $mode: 'lab') { ... }
+```
+```Sass
 $foo: chromatic-temperature(2000);
 // => RGB(255, 139, 0)
 ```
