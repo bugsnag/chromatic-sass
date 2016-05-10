@@ -37,7 +37,12 @@ Accepts an options map as a final parameter with keys:
 - `location`
 - `domain`
 
-See [chroma.js color scales](http://gka.github.io/chroma.js/#color-scales) for more information on optional configuration.
+See [chroma.js color scales](http://gka.github.io/chroma.js/#color-scales) for more information on configuration options.
+
+```Sass
+// <color0>, <color1> [, <options>]
+@function chromatic-scale($color0, color1, options: {}) { ... }
+```
 
 ```Sass
 $foo: chromatic-gradient(red, teal, (stops: 7));
