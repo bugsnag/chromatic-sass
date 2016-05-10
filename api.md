@@ -8,7 +8,7 @@ Generates a CSS gradient with additional values interpolated any chroma.js suppo
 
 Positions for your color stops must use % units, rather than any fixed length unit such as `px` or `em`.
 
-Accepts an options map as a final parameter with keys
+Accepts an options map as a final argument with keys
 - `stops` (default: 7)
 - `mode` (default 'lab')
 - `type` (default: "linear").
@@ -30,7 +30,7 @@ Generates a sequence of colors, interpolated at `n` equidistant points between t
 
 Returns an array-like Sass map, with keys set as index values.
 
-Accepts an options map as a final parameter with keys:
+Accepts an options map as a final argument with keys:
 - `stops` (default: 10)
 - `mode` (default 'lab')
 - `padding`
@@ -41,7 +41,7 @@ See [chroma.js color scales](http://gka.github.io/chroma.js/#color-scales) for m
 
 ```Sass
 // <color0>, <color1> [, <options>]
-@function chromatic-scale($color0, color1, options: {}) { ... }
+@function chromatic-scale($color0, color1, options: ()) { ... }
 ```
 
 ```Sass
