@@ -207,3 +207,47 @@ $foo: chromatic-contrast(pink, hotpink);
 $foo: chromatic-blend(#4CBBFC, #EEEE22, 'darken');
 // => RGB(71, 189, 4)
 ```
+
+### chromatic-color-darken
+Darkens a color in the `Lab` color space.
+```Sass
+// <color> [, <value>]
+@function chromatic-color-darken($color0, $value: 1) { ... }
+```
+```Sass
+$foo: chromatic-color-darken(red, 2);
+// => RGB(139, 0, 0)
+```
+
+### chromatic-color-brighten
+Brightens a color in the `Lab` color space.
+```Sass
+// <color> [, <value>]
+@function chromatic-color-brighten($color0, $value: 1) { ... }
+```
+```Sass
+$foo: chromatic-color-brighten(red, 2);
+// => RGB(255, 146, 94)
+```
+
+### chromatic-color-saturate
+Saturates a color in the `Lch` color space.
+```Sass
+// <color> [, <value>]
+@function chromatic-blend($color0, $value: 1) { ... }
+```
+```Sass
+$foo: chromatic-color-saturate(orange, 2);
+// => RGB(255, 157, 0)
+```
+
+### chromatic-color-saturate
+Desaturates a color in the `Lch` color space.
+```Sass
+// <color> [, <value>]
+@function chromatic-blend($color0, $value: 1) { ... }
+```
+```Sass
+$foo: chromatic-color-desaturate(orange, 2);
+// => RGB(233, 174, 96)
+```
