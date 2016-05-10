@@ -91,16 +91,76 @@ $foo: chromatic-mix(red, blue, .5 'rgb');
 // => RGB(129, 0, 130)
 ```
 
-
 ### chromatic-blend
 Blends two colors using RGB channel-wise blend functions. Valid blend modes are `multiply`, `darken`, `lighten`, `screen`, `overlay`, `burn`, and `dogde`.
 ```Sass
 // <color0>, <color1>, <mode>
-@function chromatic-mix($color0, $color1, $mode) { ... }
+@function chromatic-blend($color0, $color1, $mode) { ... }
 ```
 ```Sass
-$foo: chromatic-mix(red, blue);
-// => RGB(204, 0, 137)
-$foo: chromatic-mix(red, blue, .5 'rgb');
-// => RGB(129, 0, 130)
+$foo: chromatic-blend(#4CBBFC, #EEEE22, 'multiply');
+// => RGB(66, 177, 11)
+$foo: chromatic-blend(#4CBBFC, #EEEE22, 'darken');
+// => RGB(71, 189, 4)
+```
+
+### chromatic-set
+Sets the value of a channel of a color space
+```Sass
+// <color0>, <channel>
+@function chromatic-set($color, $channel) { ... }
+```
+```Sass
+$foo: chromatic-set(hotpink, 'lch.c', 30);
+// => RGB(207, 139, 169)
+```
+Relative changes work too
+```Sass
+$foo: chromatic-set(red, 'lab.l', '*.5');
+// => RGB(168, 0, 0)
+```
+
+### chromatic-get
+Gets the value of a channel of a color space
+```Sass
+// <color0>, <channel>
+@function chromatic-get($color, $channel) { ... }
+```
+```Sass
+$foo: chromatic-get(red, 'lab.l');
+// => 53.241
+```
+
+### chromatic-luminance
+Returns the relative brightness of any point in a colorspace, normalized to `0` for darkest black and `1` for lightest white according to the [WCAG definition](http://www.w3.org/TR/2008/REC-WCAG20-20081211/#relativeluminancedef).
+```Sass
+// [<luminance: (0-1)>]
+@function chromatic-luminance($color, $luminance: '', $mode: '') { ... }
+```
+```Sass
+$foo: chromatic-luminance(green);
+// => 0.154
+```
+Allows you to adjust the luminance of a color if a value is provided. The source color will be interpolated with black or white until the correct luminance is found.
+```Sass
+$foo: chromatic-luminance(green, .5);
+// => RGB(144, 202, 144)
+```
+By default, this interpolation is done in RGB, but you can interpolate in different color spaces by passing the space as third argument:
+```Sass
+$foo: chromatic-luminance(green, .5, 'lab');
+// => RGB(160, 199, 145)
+```
+
+### chromatic-contrast
+Computes the WCAG contrast ratio between two colors. A minimum contrast of 4.5:1 [is recommended](http://www.w3.org/TR/WCAG20-TECHS/G18.html) to ensure that text is still readable against a background color.
+```Sass
+// <color0>, <color1>
+@function chromatic-blend($color0, $color1) { ... }
+```
+```Sass
+$foo: chromatic-contrast(pink, hotpink);
+// => RGB(66, 177, 11)
+$foo: chromatic-blend(#4CBBFC, #EEEE22, 'darken');
+// => RGB(71, 189, 4)
 ```
