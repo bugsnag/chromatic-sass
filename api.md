@@ -92,7 +92,7 @@ $foo: chromatic-lch(80, 40, 130);
 
 ### chromatic-cmyk
 ```Sass
-// <cyan: (0-100)>, <magenta: (0-100)>, yellow: (0-100)>, black: (0-100)> [, <alpha: (0-1)>]
+// <cyan: (0-1)>, <magenta: (0-1)>, yellow: (0-1)>, black: (0-1)> [, <alpha: (0-1)>]
 @function chromatic-cmyk($c, $m, $y, $k, $alpha: '') { ... }
 ```
 ```Sass
