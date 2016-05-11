@@ -71,7 +71,7 @@ $foo: chromatic-lab(50, 0, 60);
 ### chromatic-hcl
 A cylindrical tranformation of the Lab color space, LCh combines the perceptual uniformity of Lab with the convenience of representing hue in 360 degrees like in HSL.
 ```Sass
-// <hue: (0-360)>, <lightness: (0-100)>, <chroma: (0-100)> [, <alpha: (0-1)>]
+// <hue: (0-360)>, <chroma: (0-100)>, <lightness: (0-100)> [, <alpha: (0-1)>]
 @function chromatic-hcl($h, $c, $l, $alpha: '') { ... }
 ```
 ```Sass
