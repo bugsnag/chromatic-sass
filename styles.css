@@ -1,3 +1,94 @@
+@font-face {
+  font-family: "mallory";
+  font-weight: 300;
+  font-style: regular;
+  src: url("/src/fonts/mallory-standard-regular-roman-light.woff"); }
+
+@font-face {
+  font-family: "mallory";
+  font-weight: 400;
+  font-style: regular;
+  src: url("/src/fonts/mallory-standard-regular-roman-book.woff"); }
+
+@font-face {
+  font-family: "mallory";
+  font-weight: 500;
+  font-style: regular;
+  src: url("/src/fonts/mallory-standard-regular-roman-medium.woff"); }
+
+@font-face {
+  font-family: "mallory";
+  font-weight: 600;
+  font-style: regular;
+  src: url("/src/fonts/mallory-standard-regular-roman-bold.woff"); }
+
+@font-face {
+  font-family: "mallory";
+  font-weight: 800;
+  font-style: regular;
+  src: url("/src/fonts/mallory-standard-regular-roman-black.woff"); }
+
+@font-face {
+  font-family: "mallory-mp";
+  font-weight: 300;
+  font-style: regular;
+  src: url("/src/fonts/mallory-micro-plus-regular-roman-light.woff"); }
+
+@font-face {
+  font-family: "mallory-mp";
+  font-weight: 400;
+  font-style: regular;
+  src: url("/src/fonts/mallory-micro-plus-regular-roman-book.woff"); }
+
+@font-face {
+  font-family: "mallory-mp";
+  font-weight: 500;
+  font-style: regular;
+  src: url("/src/fonts/mallory-micro-plus-regular-roman-medium.woff"); }
+
+@font-face {
+  font-family: "mallory-mp";
+  font-weight: 600;
+  font-style: regular;
+  src: url("/src/fonts/mallory-micro-plus-regular-roman-bold.woff"); }
+
+@font-face {
+  font-family: "mallory-mp";
+  font-weight: 800;
+  font-style: regular;
+  src: url("/src/fonts/mallory-micro-plus-regular-roman-black.woff"); }
+
+body {
+  font-family: "mallory";
+  background: grey; }
+
+/*@warn chromatic-gradient(red, teal);*/
+/*@warn chromatic-scale(red, teal);*/
+/*@warn chromatic-hsv(0, 1, 1, .5);*/
+/*@warn chromatic-lab(50, 0, 60, .5);*/
+/*@warn chromatic-cmyk(0, .5, .5, .5, .5);*/
+/*@warn chromatic-hcl(0, 50, 60, .5);*/
+/*@warn chromatic-lch(60, 50, 0, .5);*/
+/*@warn chromatic-hcl(130, 40, 80);*/
+/*@warn chromatic-lch(80, 40, 130);*/
+/*@warn chromatic-temperature(2000);*/
+/*@warn chromatic-gl(0.6, 0, 0.8, 0.5);*/
+/*@warn chromatic-cmyk(0.2, 0.8, 0, 0);*/
+/*@warn chromatic-mix(red, blue);*/
+/*@warn chromatic-mix(red, blue, .5, 'rgb');*/
+/*@warn chromatic-blend(#4CBBFC, #EEEE22, 'multiply');*/
+/*@warn chromatic-blend(#4CBBFC, #EEEE22, 'darken');*/
+/*@warn chromatic-color-set(hotpink, 'lch.c', 30);*/
+/*@warn chromatic-color-set(orangered, 'lab.l', '*.5');*/
+/*@warn chromatic-color-get(orangered, 'lab.l');*/
+/*@warn chromatic-color-darken(red, 2);*/
+/*@warn chromatic-contrast(pink, hotpink);*/
+/*@warn chromatic-color-brighten(red, 2);*/
+/*@warn chromatic-color-saturate(slategray, 2);*/
+/*@warn chromatic-color-desaturate(hotpink, 2);*/
+/*@warn chromatic-color-luminance(green, .5);*/
+/*@warn chromatic-color-luminance(hsla(0,0,0, .5), .5, 'lab');*/
+/*@warn chromatic-color-temperature(#ff3300);*/
 .Hero {
   height: 100vh; }
   .Hero-content {
@@ -14,5 +105,5 @@
       background-image: -webkit-linear-gradient(left, red, cyan);
       background-image: linear-gradient(to right, red, cyan); }
     .Hero-gradient--chromatic {
-      background-image: -webkit-linear-gradient(left, rgba(255, 0, 0, 1) 0%, rgba(251, 77, 40, 1) 12.5%, rgba(244, 112, 70, 1) 25%, rgba(234, 140, 99, 1) 37.5%, rgba(221, 165, 129, 1) 50%, rgba(175, 211, 191, 1) 75%, rgba(0, 255, 255, 1) 100%);
-      background-image: linear-gradient(to right, rgba(255, 0, 0, 1) 0%, rgba(251, 77, 40, 1) 12.5%, rgba(244, 112, 70, 1) 25%, rgba(234, 140, 99, 1) 37.5%, rgba(221, 165, 129, 1) 50%, rgba(175, 211, 191, 1) 75%, rgba(0, 255, 255, 1) 100%); }
+      background-image: -webkit-linear-gradient(rgb(255, 0, 0) 0%, rgb(198, 94, 0) 18.75%, rgb(149, 114, 0) 37.5%, rgb(0, 128, 0) 75%, rgb(0, 128, 128) 100%);
+      background-image: linear-gradient(rgb(255, 0, 0) 0%, rgb(198, 94, 0) 18.75%, rgb(149, 114, 0) 37.5%, rgb(0, 128, 0) 75%, rgb(0, 128, 128) 100%); }

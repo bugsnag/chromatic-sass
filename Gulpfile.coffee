@@ -1,13 +1,14 @@
 gulp = require "gulp"
 coffee = require "gulp-coffee"
 uglify = require "gulp-uglify"
-nodeSass = require "node-sass"
+webserver = require "gulp-webserver"
 sass = require "gulp-sass"
 autoprefixer = require "gulp-autoprefixer"
 cssGlobbing = require "gulp-css-globbing"
 cssNano = require "gulp-cssnano"
 chromatic = require "chromatic-sass"
 liveReload = require "gulp-livereload"
+include = require "gulp-include"
 
 gulp.task "build-js", ->
   stream = gulp.src("src/script/scripts.coffee")
@@ -19,7 +20,11 @@ gulp.task "build-js", ->
 gulp.task "build-sass", ->
   stream = gulp.src("src/styles/styles.scss")
     .pipe(cssGlobbing({extensions: [".css", ".scss"]}))
-    .pipe(sass({functions: chromatic}))
+    .pipe(include())
+    .pipe(sass({
+      includePaths: ["src/styles", "bower_components/"]
+      functions: chromatic
+    }))
     .pipe(autoprefixer())
     .pipe(gulp.dest('./'))
     .pipe(liveReload())
@@ -30,4 +35,8 @@ gulp.task "watch", ->
   liveReload.listen()
   gulp.watch "src/**/*", { interval: 100 }, ["build"]
 
-gulp.task "default", ["build", "watch"]
+gulp.task "webserver", ->
+  gulp.src('./')
+    .pipe(webserver())
+
+gulp.task "default", ["build", "watch", "webserver"]
