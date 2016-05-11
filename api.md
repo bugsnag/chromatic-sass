@@ -42,7 +42,7 @@ $foo: chromatic-scale(red, teal, (stops: 7));
 
 ## Color spaces
 
-### chromatic-hsv(h, s, v [, alpha])
+#### chromatic-hsv(h, s, v [, alpha])
 h: 0-360
 s: 0-1
 v: 0-1
