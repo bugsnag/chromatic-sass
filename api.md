@@ -25,7 +25,7 @@ $foo: chromatic-gradient(to right, red, green 75%, teal, (stops: 5, mode: 'lch')
 ```
 
 ### chromatic-scale
-Generates a sequence of colors, interpolated at `n` equidistant points between two source colors. By default, interpolation is done in the 'lab' space, so that steps between the interpolated colors appear linearly. It's an easy way to generate nice color palettes.
+Generates a sequence of colors, interpolated at `n` equidistant points between two source colors. By default, interpolation is done in the 'lab' space, so that steps between the interpolated colors appear linearly. It's an easy way to generate nice color palettes that can be [easily referenced in your stylesheets](http://blog.bugsnag.com/sass-color-palettes).
 
 Returns an array-like Sass map, with keys set as index values.
 
