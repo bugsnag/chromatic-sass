@@ -76,7 +76,7 @@ A cylindrical tranformation of the Lab color space, LCh combines the perceptual 
 ```
 ```Sass
 $foo: chromatic-hcl(130, 40, 80);
-// => RGB(169, 211, 137)
+// => #aad28c
 ```
 
 ### chromatic-lch
@@ -86,8 +86,8 @@ A different ordering of the hcl variables.
 @function chromatic-lch($l, $c, $h, $alpha: '') { ... }
 ```
 ```Sass
-$foo: chromatic-lch(0, 1, 0);
-// => RGB(255, 0, 0)
+$foo: chromatic-lch(80, 40, 130);
+// => #aad28c
 ```
 
 ### chromatic-cmyk
@@ -97,7 +97,7 @@ $foo: chromatic-lch(0, 1, 0);
 ```
 ```Sass
 $foo: chromatic-cmyk(0.2, 0.8, 0, 0);
-// => RGB(206, 30, 255)
+// => #cc33ff
 ```
 
 ### chromatic-gl
@@ -108,7 +108,7 @@ A variant of RGB(A), the components normalized to the range of 0..1.
 ```
 ```Sass
 $foo: chromatic-gl(0.6, 0, 0.8, 0.5);
-// => RGBA(154, 0, 207, 0.5)
+// => rgba(153, 0, 204, 0.5)
 ```
 
 ### chromatic-temperature
@@ -121,7 +121,7 @@ $foo: chromatic-temperature(2000);
 // => #ff8b14
 ```
 
-## Color manipulation
+## Mixing, blending, comparisons
 
 ### chromatic-mix
 Mix two colors, in a specified color space. By default mixes at position 0.5, equidistant between the provided colors, in the perceptually uniform Lab space. Valid spaces are `lab`, `hcl`, `lch`, `cmyk`, `rgb`, `hsl`.
@@ -131,9 +131,9 @@ Mix two colors, in a specified color space. By default mixes at position 0.5, eq
 ```
 ```Sass
 $foo: chromatic-mix(red, blue);
-// => RGB(204, 0, 137)
-$foo: chromatic-mix(red, blue, .5 'rgb');
-// => RGB(129, 0, 130)
+// => #ca0088
+$foo: chromatic-mix(red, blue, .5, 'rgb');
+// => purple
 ```
 
 ### chromatic-blend
@@ -144,70 +144,49 @@ Blends two colors using RGB channel-wise blend functions. Valid blend modes are 
 ```
 ```Sass
 $foo: chromatic-blend(#4CBBFC, #EEEE22, 'multiply');
-// => RGB(66, 177, 11)
+// => #47af22
 $foo: chromatic-blend(#4CBBFC, #EEEE22, 'darken');
-// => RGB(71, 189, 4)
-```
-
-### chromatic-set
-Sets the value of a channel of a color space
-```Sass
-// <color0>, <channel>
-@function chromatic-set($color, $channel) { ... }
-```
-```Sass
-$foo: chromatic-set(hotpink, 'lch.c', 30);
-// => RGB(207, 139, 169)
-```
-Relative changes work too
-```Sass
-$foo: chromatic-set(red, 'lab.l', '*.5');
-// => RGB(168, 0, 0)
-```
-
-### chromatic-get
-Gets the value of a channel of a color space
-```Sass
-// <color0>, <channel>
-@function chromatic-get($color, $channel) { ... }
-```
-```Sass
-$foo: chromatic-get(red, 'lab.l');
-// => 53.241
-```
-
-### chromatic-luminance
-Returns the relative brightness of any point in a colorspace, normalized to `0` for darkest black and `1` for lightest white according to the [WCAG definition](http://www.w3.org/TR/2008/REC-WCAG20-20081211/#relativeluminancedef).
-```Sass
-// [<luminance: (0-1)>]
-@function chromatic-luminance($color, $luminance: '', $mode: '') { ... }
-```
-```Sass
-$foo: chromatic-luminance(green);
-// => 0.154
-```
-Allows you to adjust the luminance of a color if a value is provided. The source color will be interpolated with black or white until the correct luminance is found.
-```Sass
-$foo: chromatic-luminance(green, .5);
-// => RGB(144, 202, 144)
-```
-By default, this interpolation is done in RGB, but you can interpolate in different color spaces by passing the space as a third argument:
-```Sass
-$foo: chromatic-luminance(green, .5, 'lab');
-// => RGB(160, 199, 145)
+// => #4cbb22
 ```
 
 ### chromatic-contrast
 Computes the WCAG contrast ratio between two colors. A minimum contrast of 4.5:1 [is recommended](http://www.w3.org/TR/WCAG20-TECHS/G18.html) to ensure that text is still readable against a background color.
 ```Sass
 // <color0>, <color1>
-@function chromatic-blend($color0, $color1) { ... }
+@function chromatic-contrast($color0, $color1) { ... }
 ```
 ```Sass
 $foo: chromatic-contrast(pink, hotpink);
-// => RGB(66, 177, 11)
-$foo: chromatic-blend(#4CBBFC, #EEEE22, 'darken');
-// => RGB(71, 189, 4)
+// => 1.72148
+```
+
+## Color metrics and manipulation
+
+### chromatic-color-set
+Sets the value of a channel of a color space
+```Sass
+// <color0>, <channel>
+@function chromatic-set($color, $channel) { ... }
+```
+```Sass
+$foo: chromatic-color-set(hotpink, 'lch.c', 30);
+// => #ce8ca9
+```
+Relative changes work too
+```Sass
+$foo: chromatic-color-set(orangered, 'lab.l', '*.5');
+// => #a10000
+```
+
+### chromatic-color-get
+Gets the value of a channel of a color space
+```Sass
+// <color0>, <channel>
+@function chromatic-color-get($color, $channel) { ... }
+```
+```Sass
+$foo: chromatic-color-get(orangered, 'lab.l');
+// => 57.58173
 ```
 
 ### chromatic-color-darken
@@ -218,7 +197,7 @@ Darkens a color in the `Lab` color space.
 ```
 ```Sass
 $foo: chromatic-color-darken(red, 2);
-// => RGB(139, 0, 0)
+// => #890000
 ```
 
 ### chromatic-color-brighten
@@ -229,7 +208,7 @@ Brightens a color in the `Lab` color space.
 ```
 ```Sass
 $foo: chromatic-color-brighten(red, 2);
-// => RGB(255, 146, 94)
+// => #ff9264
 ```
 
 ### chromatic-color-saturate
@@ -239,8 +218,8 @@ Saturates a color in the `Lch` color space.
 @function chromatic-blend($color0, $value: 1) { ... }
 ```
 ```Sass
-$foo: chromatic-color-saturate(orange, 2);
-// => RGB(255, 157, 0)
+$foo: chromatic-color-saturate(slategray, 2);
+// => #0087cd
 ```
 
 ### chromatic-color-desaturate
@@ -250,6 +229,38 @@ Desaturates a color in the `Lch` color space.
 @function chromatic-color-desaturate($color0, $value: 1) { ... }
 ```
 ```Sass
-$foo: chromatic-color-desaturate(orange, 2);
-// => RGB(233, 174, 96)
+$foo: chromatic-color-desaturate(hotpink, 2);
+// => #cd8ca8
+```
+
+### chromatic-color-temperature
+Estimate the temperature in Kelvin of any given color, though this makes the only sense for colors from the [temperature gradient](http://gka.github.io/chroma.js/#chroma-temperature) above.
+```Sass
+// <color>
+@function chromatic-color-temperature($color) { ... }
+```
+```Sass
+$foo: chromatic-color-temperature(#ff3300);
+// => 1000
+```
+
+### chromatic-color-luminance
+Returns the relative brightness of any point in a colorspace, normalized to `0` for darkest black and `1` for lightest white according to the [WCAG definition](http://www.w3.org/TR/2008/REC-WCAG20-20081211/#relativeluminancedef).
+```Sass
+// <color> [, <luminance: (0-1)>] [, <mode>]
+@function chromatic-color-luminance($color, $luminance: '', $mode: '') { ... }
+```
+```Sass
+$foo: chromatic-color-luminance(green);
+// => 0.154
+```
+Allows you to adjust the luminance of a color if a value is provided. The source color will be interpolated with black or white until the correct luminance is found.
+```Sass
+$foo: chromatic-color-luminance(green, .5);
+// => #92c992
+```
+By default, this interpolation is done in RGB, but you can interpolate in different color spaces by passing the space as a third argument:
+```Sass
+$foo: chromatic-color-luminance(green, .5, 'lab');
+// => #a1c693
 ```

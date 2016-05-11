@@ -58,32 +58,16 @@ module.exports =
     rgb2sass chroma.gl(r.getValue(), g.getValue(), b.getValue(), alpha.getValue())._rgb
 
   "chromatic-temperature($temperature)": (temperature) ->
-    console.log temperature.getValue()
     rgb2sass chroma.temperature(temperature.getValue())._rgb
 
-  "chromatic-color-temperature($color)": (color) ->
-    rgb = sass2rgb color
-    sass.types.Number chroma(rgb).temperature()
+  "chromatic-mix($color0, $color1, $position: .5, $mode: 'lab')": (color0, color1, position, mode) ->
+    rgb2sass chroma.mix(sass2rgb(color0), sass2rgb(color1), position.getValue(), mode.getValue())._rgb
 
-  "chromatic-color-darken($color, $value: '')": (color, value) ->
-    value = value.getValue()
-    rgb = sass2rgb color
-    rgb2sass chroma(rgb).darken((value if value?))._rgb
+  "chromatic-blend($color0, $color1, $blendMode)": (color0, color1, blendMode) ->
+    rgb2sass chroma.blend(sass2rgb(color0), sass2rgb(color1), blendMode.getValue())._rgb
 
-  "chromatic-color-lighten($color, $value: '')": (color, value) ->
-    value = value.getValue()
-    rgb = sass2rgb color
-    rgb2sass chroma(rgb).lighten((value if value?))._rgb
-
-  "chromatic-color-saturate($color, $value: '')": (color, value) ->
-    value = value.getValue()
-    rgb = sass2rgb color
-    rgb2sass chroma(rgb).saturate((value if value?))._rgb
-
-  "chromatic-color-desaturate($color, $value: '')": (color, value) ->
-    value = value.getValue()
-    rgb = sass2rgb color
-    rgb2sass chroma(rgb).desaturate((value if value?))._rgb
+  "chromatic-contrast($color0, $color1)": (color0, color1) ->
+    sass.types.Number chroma.contrast(sass2hex(color0), sass2hex(color1))
 
   "chromatic-color-set($color, $channel, $value)": (color, channel, value) ->
     channel = channel.getValue()
@@ -95,6 +79,30 @@ module.exports =
     channel = channel.getValue()
     rgb = sass2rgb color
     sass.types.Number chroma(rgb).get(channel)
+
+  "chromatic-color-darken($color, $value: '')": (color, value) ->
+    value = value.getValue()
+    rgb = sass2rgb color
+    rgb2sass chroma(rgb).darken((value if value?))._rgb
+
+  "chromatic-color-brighten($color, $value: '')": (color, value) ->
+    value = value.getValue()
+    rgb = sass2rgb color
+    rgb2sass chroma(rgb).brighten((value if value?))._rgb
+
+  "chromatic-color-saturate($color, $value: '')": (color, value) ->
+    value = value.getValue()
+    rgb = sass2rgb color
+    rgb2sass chroma(rgb).saturate((value if value?))._rgb
+
+  "chromatic-color-desaturate($color, $value: '')": (color, value) ->
+    value = value.getValue()
+    rgb = sass2rgb color
+    rgb2sass chroma(rgb).desaturate((value if value?))._rgb
+
+  "chromatic-color-temperature($color)": (color) ->
+    rgb = sass2rgb color
+    sass.types.Number chroma(rgb).temperature()
 
   "chromatic-color-luminance($color, $luminance: '', $mode: '')": (color, luminance, mode) ->
     rgb = sass2rgb color
@@ -108,17 +116,9 @@ module.exports =
     else
       sass.types.Number chroma(rgb).luminance()
 
-  "chromatic-mix($color0, $color1, $position: .5, $mode: 'lab')": (color0, color1, position, mode) ->
-    rgb2sass chroma.mix(sass2rgb(color0), sass2rgb(color1), position.getValue(), mode.getValue())._rgb
-
-  "chromatic-blend($color0, $color1, $blendMode)": (color0, color1, blendMode) ->
-    rgb2sass chroma.blend(sass2rgb(color0), sass2rgb(color1), blendMode.getValue())._rgb
 
   "chromatic-random()": () ->
     rgb2sass chroma.random()._rgb
-
-  "chromatic-contrast($color0, $color1)": (color0, color1) ->
-    sass.types.Number chroma.contrast(sass2rgb(color0), sass2rgb(color1))
 
   "chromatic-gradient($argslist...)": (argslist) ->
     defaults =
