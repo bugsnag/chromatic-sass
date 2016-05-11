@@ -3,7 +3,7 @@ For installation and build instructions **[read the quick-start guide &rsaquo;](
 
 ## CSS utilities
 
-#### chromatic-gradient(cssGradient [, options])
+### chromatic-gradient(cssGradient [, options])
 Generates a CSS gradient with additional values interpolated any chroma.js supported color space, `lab` by default. With 'lab' interpolation, the result is a gradient that appears more natural, and often more beautiful.
 
 Positions for your color stops must use % units, rather than any fixed length unit such as `px` or `em`.
@@ -42,11 +42,11 @@ $foo: chromatic-scale(red, teal, (stops: 7));
 
 ## Color spaces
 
-#### chromatic-hsv(h, s, v [, alpha])
-- h: 0-360
-- s: 0-1
-- v: 0-1
-- a: 0-1
+### chromatic-hsv
+```Sass
+// <hue: (0-360)>, <saturation: (0-1)>, <value: (0-1)> [, <alpha: (0-1)>]
+@function chromatic-hsv($h, $s, $v, $alpha: '') { ... }
+```
 ```Sass
 $foo: chromatic-hsv(0, 1, 1);
 // => red
