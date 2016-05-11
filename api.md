@@ -21,7 +21,7 @@ $foo: chromatic-gradient(to right, red, green 75%, teal, (stops: 5, mode: 'lch')
 // => linear-gradient(to right, rgb(255, 0, 0) 0%, rgb(198, 94, 0) 18.75%, rgb(149, 114, 0) 37.5%, rgb(0, 128, 0) 75%, rgb(0, 128, 128) 100%)
 ```
 
-### chromatic-scale
+### chromatic-scale(color0, color1 [, options])
 Generates a sequence of colors, interpolated at `n` equidistant points between two source colors. By default, interpolation is done in the 'lab' space, so that steps between the interpolated colors appear linearly. It's an easy way to generate nice color palettes that can be [easily referenced in your stylesheets](http://blog.bugsnag.com/sass-color-palettes).
 
 Returns an array-like Sass map, with keys set as index values.
@@ -36,20 +36,17 @@ Accepts an options map as a final argument with keys:
 See [chroma.js color scales](http://gka.github.io/chroma.js/#color-scales) for more information on configuration options.
 
 ```Sass
-// <color0>, <color1> [, <options>]
-```
-```Sass
 $foo: chromatic-scale(red, teal, (stops: 7));
 // => (0: red, 1: #e5401f, 2: #cb5735, 3: #ae6748, 4: #8d715b, 5: #647a6d, 6: teal)
 ```
 
 ## Color spaces
 
-### chromatic-hsv
-```Sass
-// <hue: (0-360)>, <saturation: (0-1)>, <value: (0-1)> [, <alpha: (0-1)>]
-@function chromatic-hsv($h, $s, $v, $alpha: '') { ... }
-```
+### chromatic-hsv(h, s, v [, alpha])
+h: 0-360
+s: 0-1
+v: 0-1
+a: 0-1
 ```Sass
 $foo: chromatic-hsv(0, 1, 1);
 // => red
