@@ -3,7 +3,7 @@ For installation and build instructions **[read the quick-start guide &rsaquo;](
 
 ## CSS utilities
 
-#### `chromatic-gradient(cssGradient [, options])`
+#### chromatic-gradient(cssGradient [, options])
 Generates a CSS gradient with additional values interpolated any chroma.js supported color space, `lab` by default. With 'lab' interpolation, the result is a gradient that appears more natural, and often more beautiful.
 
 Positions for your color stops must use % units, rather than any fixed length unit such as `px` or `em`.
