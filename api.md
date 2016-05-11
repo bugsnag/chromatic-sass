@@ -115,6 +115,7 @@ $foo: chromatic-gl(0.6, 0, 0.8, 0.5);
 Light 2000K, bright sunlight 6000K. Goes to about 20000K. Based on [Neil Bartlett's implementation](https://github.com/neilbartlett/color-temperature).
 ```Sass
 // <temperature: (0-20000)>
+@function chromatic-temperature($temperature) { ... }
 ```
 ```Sass
 $foo: chromatic-temperature(2000);
