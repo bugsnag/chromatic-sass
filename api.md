@@ -3,7 +3,7 @@ For installation and build instructions **[read the quick-start guide &rsaquo;](
 
 ## CSS utilities
 
-### chromatic-gradient
+### chromatic-gradient(<css-gradient> [, <options>])
 Generates a CSS gradient with additional values interpolated any chroma.js supported color space, `lab` by default. With 'lab' interpolation, the result is a gradient that appears more natural, and often more beautiful.
 
 Positions for your color stops must use % units, rather than any fixed length unit such as `px` or `em`.
@@ -13,9 +13,6 @@ Accepts an options map as a final argument with keys
 - `mode` (default `'lab'`)
 - `type` (default: `'linear'`).
 
-```Sass
-// <css-gradient> [, <options>]
-```
 ```Sass
 $foo: chromatic-gradient(red, teal);
 // => linear-gradient(rgb(255, 0, 0) 0%, rgb(236, 56, 25) 12.5%, rgb(216, 77, 42) 25%, rgb(196, 92, 57) 37.5%, rgb(174, 103, 72) 50%, rgb(122, 118, 100) 75%, rgb(0, 128, 128) 100%)
@@ -31,7 +28,7 @@ Returns an array-like Sass map, with keys set as index values.
 
 Accepts an options map as a final argument with keys:
 - `stops` (default: `10`)
-- `mode` (default `'lab'`)
+- `mode` (default: `'lab'`)
 - `padding`
 - `location`
 - `domain`
