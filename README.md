@@ -54,7 +54,6 @@ Utilize Chromatic functions in your stylesheets as you would any other Sass func
 .element {
   background-image: chromatic-gradient(to right, blue, red);
 }
-
 ```
 
 ### Build
