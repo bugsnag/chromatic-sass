@@ -1,0 +1,9 @@
+{
+  "name": "chromatic-sass-docs",
+  "version": "0.1",
+  "dependencies": {
+    "modular-scale": "2.0.5",
+    "rainbow": "1.1.9",
+    "normalize.scss": "~4.1.0"
+  }
+}

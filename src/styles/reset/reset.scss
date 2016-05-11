@@ -1,0 +1,165 @@
+@import "normalize-scss/normalize.scss";
+
+/* ==========================================================================
+  Opinionated defaults for base elements
+============================================================================= */
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+  outline: 0; //TODO: implement outline on tabble elements throughout the application
+}
+
+html,
+body {
+  min-height: 100%;
+  min-width: 960px;
+}
+
+html {
+  @include responsive("font-size", 12px, $breakpoint-px);
+  line-height: 1;  // Setting line height to 1 to encourage typographic baseline sizing
+  color: color(gray, 0);
+  font-family: $font-default;
+  font-feature-settings: "lnum";
+  user-select: none;
+  overflow-y: scroll;
+}
+
+/* Typographic elements
+============================================================================= */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6, {
+  margin: 0;
+  padding: 0;
+  font-weight: font-weight(0);
+}
+
+p{
+  margin: 0;
+  padding: 0;
+}
+
+hr {
+  display: block;
+  height: 1px;
+  margin: 1rem 0;
+  padding: 0;
+  border: 0;
+}
+
+pre,
+code {
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  font-family: $font-mono;
+  line-height: inherit;
+  color: inherit;
+  border-radius: 0;
+}
+
+pre {
+  user-select: text;
+}
+
+
+/* Inline typographic elements
+============================================================================= */
+
+strong {
+  font-weight: font-weight(2);
+}
+
+em {
+  font-style: italic;
+  font-weight: font-weight(0);
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  &:active {
+    outline: 0;
+  }
+}
+
+
+/* Multimedia elements
+============================================================================= */
+img {
+  line-height: 1;
+}
+
+svg{
+  line-height: 1;
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+
+/* Forms
+============================================================================= */
+
+fieldset {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+textarea {
+  width: 100%;
+  resize: vertical;
+  outline: none;
+  border: none;
+  user-select: text;
+}
+
+input {
+  outline: none;
+  user-select: text;
+  border: none;
+}
+
+button{
+  box-shadow: none;
+  border: 1px solid color(grey, 5);
+  padding: 0;
+  background: transparent;
+}
+
+
+/* Structural elements
+============================================================================= */
+
+table{
+  border-collapse: collapse;
+  text-align: left;
+}
+
+ol,
+ul {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+li {
+  margin: 0;
+}
+
+
+/* Special selectors
+============================================================================= */
+
+::-moz-selection {
+}
+
+::selection {
+}
