@@ -3,7 +3,7 @@ For installation and build instructions **[read the quick-start guide &rsaquo;](
 
 ## CSS utilities
 
-### chromatic-gradient(cssGradient [, options])
+### chromatic-gradient
 Generates a CSS gradient with additional values interpolated any chroma.js supported color space, `lab` by default. With 'lab' interpolation, the result is a gradient that appears more natural, and often more beautiful.
 
 Positions for your color stops must use % units, rather than any fixed length unit such as `px` or `em`.
@@ -13,6 +13,9 @@ Accepts an options map as a final argument with keys
 - `mode` (default `'lab'`)
 - `type` (default: `'linear'`).
 
+```
+// <css-gradient> [, <options>])
+```
 ```Sass
 $foo: chromatic-gradient(red, teal);
 // => linear-gradient(rgb(255, 0, 0) 0%, rgb(236, 56, 25) 12.5%, rgb(216, 77, 42) 25%, rgb(196, 92, 57) 37.5%, rgb(174, 103, 72) 50%, rgb(122, 118, 100) 75%, rgb(0, 128, 128) 100%)
@@ -21,7 +24,7 @@ $foo: chromatic-gradient(to right, red, green 75%, teal, (stops: 5, mode: 'lch')
 // => linear-gradient(to right, rgb(255, 0, 0) 0%, rgb(198, 94, 0) 18.75%, rgb(149, 114, 0) 37.5%, rgb(0, 128, 0) 75%, rgb(0, 128, 128) 100%)
 ```
 
-### chromatic-scale(color0, color1 [, options])
+### chromatic-scale
 Generates a sequence of colors, interpolated at `n` equidistant points between two source colors. By default, interpolation is done in the 'lab' space, so that steps between the interpolated colors appear linearly. It's an easy way to generate nice color palettes that can be [easily referenced in your stylesheets](http://blog.bugsnag.com/sass-color-palettes).
 
 Returns an array-like Sass map, with keys set as index values.
@@ -35,6 +38,9 @@ Accepts an options map as a final argument with keys:
 
 See [chroma.js color scales](http://gka.github.io/chroma.js/#color-scales) for more information on configuration options.
 
+```
+// (<color0>, <color1> [, <options>])
+```
 ```Sass
 $foo: chromatic-scale(red, teal, (stops: 7));
 // => (0: red, 1: #e5401f, 2: #cb5735, 3: #ae6748, 4: #8d715b, 5: #647a6d, 6: teal)
@@ -45,7 +51,7 @@ $foo: chromatic-scale(red, teal, (stops: 7));
 ### chromatic-hsv
 ```Sass
 // <hue: (0-360)>, <saturation: (0-1)>, <value: (0-1)> [, <alpha: (0-1)>]
-@function chromatic-hsv($h, $s, $v, $alpha: '') { ... }
+@function chromatic-hsv($h, $s, $v, $alpha: 1) { ... }
 ```
 ```Sass
 $foo: chromatic-hsv(0, 1, 1);
@@ -55,7 +61,7 @@ $foo: chromatic-hsv(0, 1, 1);
 ### chromatic-lab
 ```Sass
 // <lightness: (0-100)>, <a: (-128-127)>, <b: (-128-127)> [, <alpha: (0-1)>]
-@function chromatic-lab($l, $a, $b, $alpha: '') { ... }
+@function chromatic-lab($l, $a, $b, $alpha: 1) { ... }
 ```
 ```Sass
 $foo: chromatic-lab(50, 0, 60);
@@ -66,7 +72,7 @@ $foo: chromatic-lab(50, 0, 60);
 A cylindrical tranformation of the Lab color space, LCh combines the perceptual uniformity of Lab with the convenience of representing hue in 360 degrees like in HSL.
 ```Sass
 // <hue: (0-360)>, <chroma: (0-100)>, <lightness: (0-100)> [, <alpha: (0-1)>]
-@function chromatic-hcl($h, $c, $l, $alpha: '') { ... }
+@function chromatic-hcl($h, $c, $l, $alpha: 1) { ... }
 ```
 ```Sass
 $foo: chromatic-hcl(130, 40, 80);
@@ -77,7 +83,7 @@ $foo: chromatic-hcl(130, 40, 80);
 A different ordering of the hcl variables.
 ```Sass
 // <lightness: (0-100)>, <chroma: (0-100)>, hue: (0-360)> [, <alpha: (0-1)>]
-@function chromatic-lch($l, $c, $h, $alpha: '') { ... }
+@function chromatic-lch($l, $c, $h, $alpha: 1) { ... }
 ```
 ```Sass
 $foo: chromatic-lch(80, 40, 130);
@@ -87,7 +93,7 @@ $foo: chromatic-lch(80, 40, 130);
 ### chromatic-cmyk
 ```Sass
 // <cyan: (0-1)>, <magenta: (0-1)>, yellow: (0-1)>, black: (0-1)> [, <alpha: (0-1)>]
-@function chromatic-cmyk($c, $m, $y, $k, $alpha: '') { ... }
+@function chromatic-cmyk($c, $m, $y, $k, $alpha: 1) { ... }
 ```
 ```Sass
 $foo: chromatic-cmyk(0.2, 0.8, 0, 0);
@@ -98,7 +104,7 @@ $foo: chromatic-cmyk(0.2, 0.8, 0, 0);
 A variant of RGB(A), the components normalized to the range of 0..1.
 ```Sass
 // <red: (0-1)>, <green: (0-1)>, <blue: (0-1)> [, <alpha: (0-1)>]
-@function chromatic-gl($r, $g, $b, $alpha: '') { ... }
+@function chromatic-gl($r, $g, $b, $alpha: 1) { ... }
 ```
 ```Sass
 $foo: chromatic-gl(0.6, 0, 0.8, 0.5);
