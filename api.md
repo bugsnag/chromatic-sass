@@ -14,7 +14,7 @@ Accepts an options map as a final argument with keys
 - `type` (default: `'linear'`).
 
 ```
-// <css-gradient> [, <options>])
+// <css-gradient> [, <options>]
 ```
 ```Sass
 $foo: chromatic-gradient(red, teal);
@@ -39,7 +39,7 @@ Accepts an options map as a final argument with keys:
 See [chroma.js color scales](http://gka.github.io/chroma.js/#color-scales) for more information on configuration options.
 
 ```
-// (<color0>, <color1> [, <options>])
+// <color0>, <color1> [, <options>]
 ```
 ```Sass
 $foo: chromatic-scale(red, teal, (stops: 7));
