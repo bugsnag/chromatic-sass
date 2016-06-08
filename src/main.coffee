@@ -2,7 +2,8 @@ extend = require "extend"
 chroma = require "chroma-js"
 sass = require "node-sass"
 sassUtils = require("node-sass-utils")(sass)
-isEqual = require('lodash.isEqual')
+lodash = require('lodash')
+isEqual = lodash.isEqual
 
 # Generate a hex color string from a sass color
 sass2hex = (color) ->

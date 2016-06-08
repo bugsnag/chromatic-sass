@@ -9,7 +9,7 @@
   "dependencies": {
     "chroma-js": "^1.1.1",
     "extend": "^3.0.0",
-    "lodash.isequal": "^4.1.4",
+    "lodash": "^4.1.4",
     "node-sass": ">=3.0.0",
     "node-sass-utils": "^1.1.2"
   },
