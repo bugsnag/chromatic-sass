@@ -138,7 +138,7 @@ $foo: chromatic-mix(red, blue, .5, 'rgb');
 ```
 
 ### chromatic-blend
-Blends two colors using RGB channel-wise blend functions. Valid blend modes are `multiply`, `darken`, `lighten`, `screen`, `overlay`, `burn`, and `dogde`.
+Blends two colors using RGB channel-wise blend functions. Valid blend modes are `multiply`, `darken`, `lighten`, `screen`, `overlay`, `burn`, and `dodge`.
 ```Sass
 // <color0>, <color1>, <mode>
 @function chromatic-blend($color0, $color1, $mode) { ... }
